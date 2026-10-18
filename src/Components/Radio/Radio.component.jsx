@@ -10,6 +10,9 @@ import { GiPlayButton, GiPauseButton } from 'react-icons/gi';
 import { MdEject } from 'react-icons/md';
 import axios from 'axios';
 
+// a stream without a song title still shows something sensible
+const nowPlayingText = (source) => (source && (source.title || source.server_name)) || 'Unknown track';
+
 const Radio = ({activeTrack, nothingOnAir, setActiveTrack, setSpinTheBall, setDancing}) => {
   const [status, setStatus] = useState('EMPTY');
   const [audio, setAudio] = useState(null);
@@ -67,10 +70,10 @@ const Radio = ({activeTrack, nothingOnAir, setActiveTrack, setSpinTheBall, setDa
 
           //IF ONE SOURCE, ICESTATS HAS NO ARRAY
           if (Array.isArray(result.data.icestats.source)) {
-            setNowPlaying(result.data.icestats.source[icecastIndex].title);
+            setNowPlaying(nowPlayingText(result.data.icestats.source[icecastIndex]));
           } else {
             if (result.data.icestats.source) {
-              setNowPlaying(result.data.icestats.source.title);
+              setNowPlaying(nowPlayingText(result.data.icestats.source));
             } else {
               setNowPlaying('We have no idea what is playing!');
             }

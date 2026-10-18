@@ -32,16 +32,16 @@ const Player = ({ tracks, setDancing }) => {
   const DiscoBall = activeTrack === null ?  null :  <Disco spinTheBall={spinTheBall} />;
 
   return (
-    <Container activeTrack={activeTrack}>
+    <Container>
       <motion.div className="drag-area" ref={constraintsRef}>
-        <Bottom activeTrack={activeTrack}>
+        <Bottom $activeTrack={activeTrack}>
           <Radio activeTrack={activeTrack} setActiveTrack={(e) => setActiveTrack(e)} setSpinTheBall={() => setSpinTheBall(!spinTheBall)} setDancing={() => setDancing()}/>
         </Bottom>
         <Top>
           {Cassettes}
         </Top>
       </motion.div>
-      <Background activeTrack={activeTrack} spinTheBall={spinTheBall}/>
+      <Background $activeTrack={activeTrack} $spinTheBall={spinTheBall}/>
       {DiscoBall}
     </Container>
   )
@@ -59,8 +59,8 @@ const Background = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: ${props => props.activeTrack !== null  && 'rgb(0, 0, 0, .5)'};
-  animation: ${props => props.spinTheBall === true  && 'reflect 4s forwards infinite'};
+  background-color: ${props => props.$activeTrack !== null  && 'rgb(0, 0, 0, .5)'};
+  animation: ${props => props.$spinTheBall === true  && 'reflect 4s forwards infinite'};
 `
 
 const Row = styled.div`
@@ -84,7 +84,7 @@ const Bottom = styled.div`
   bottom: 0;
   left: 0;
   width: 98%;
-  z-index: ${props => props.activeTrack && '100'};
+  z-index: ${props => props.$activeTrack && '100'};
   margin-bottom: 1.5rem;
 `
 

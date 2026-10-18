@@ -62,7 +62,7 @@ const Radio = ({activeTrack, setActiveTrack, setSpinTheBall, setDancing}) => {
           const icecastIndex = activeTrack.id.slice(-1);
 
           const result = await axios.get(
-            process.env.REACT_APP_ICECAST_URL + "/status-json.xsl"
+            import.meta.env.REACT_APP_ICECAST_URL + "/status-json.xsl"
           );
 
           //IF ONE SOURCE, ICESTATS HAS NO ARRAY

@@ -15,7 +15,7 @@ import headerImg from './Images/text.png';
 
 const sslUrl = (trackUrl) => {
   let keyUrl = !trackUrl ? null : trackUrl.slice(trackUrl.lastIndexOf('/'));
-  return process.env.REACT_APP_ICECAST_URL + keyUrl;
+  return import.meta.env.REACT_APP_ICECAST_URL + keyUrl;
 };
 
 const getTracks = (source) => {
@@ -44,22 +44,24 @@ const getTracks = (source) => {
     id: 'jungle',
     genre: null,
     title: 'Jungle',
-    url: process.env.REACT_APP_JUNGLE_STATION,
+    url: import.meta.env.REACT_APP_JUNGLE_STATION,
     date: null,
     station: null,
     desc: null,
     heardBy: null,
     type: null
   };
+  // the jungle tape only shows when its station is configured
+  const defaultTracks = defaultTrack.url ? [defaultTrack] : [];
 
   // zero sources
   if (!source) {
-    return [defaultTrack];
+    return defaultTracks;
   }
   //single source
   if (!Array.isArray(source)) {
 
-    return [defaultTrack, {
+    return [...defaultTracks, {
       id: 'track0',
       genre: source.genre || null,
       title: source.title || '<no track data>',
@@ -85,7 +87,7 @@ const getTracks = (source) => {
       type: s.server_type || null
       })
     );
-    return [defaultTrack, ...icecastTracks]
+    return [...defaultTracks, ...icecastTracks]
   } 
 };
 
@@ -101,20 +103,25 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-
-      const result = await axios.get(
-        process.env.REACT_APP_ICECAST_URL + "/status-json.xsl"
-      );
-      if (result.data) {
-        const response = {
-          adminEmail: result.data.icestats.admin,
-          tracks: getTracks(result.data.icestats.source)
-        };
-        setData(response);
+      try {
+        const result = await axios.get(
+          import.meta.env.REACT_APP_ICECAST_URL + "/status-json.xsl"
+        );
+        if (result.data) {
+          const response = {
+            adminEmail: result.data.icestats.admin,
+            tracks: getTracks(result.data.icestats.source)
+          };
+          setData(response);
+        }
+      } catch (error) {
+        // icecast is unreachable, still show the default tape if there is one
+        console.error(error);
+        setData({ tracks: getTracks(null) });
       }
     };
     const getStuff = async () => {
-      await axios.get(process.env.REACT_APP_DB_LINK)
+      await axios.get(import.meta.env.REACT_APP_DB_LINK)
         .then(response => {
           if (response && response.data && response.data.length > 0) {
             setPoster(response.data.data[0].gigPoster);
@@ -127,7 +134,10 @@ const App = () => {
         });
     };
     fetchData();
-    getStuff();
+    // gig posters come from the db, skip when it isn't configured
+    if (import.meta.env.REACT_APP_DB_LINK) {
+      getStuff();
+    }
   }, []);
 
   useEffect(() => {
@@ -150,13 +160,13 @@ const App = () => {
   };
 
   return (
-    <Body id="main" height={height} img={activeBg} header={headerImg}>
+    <Body id="main" $height={height} $img={activeBg} $header={headerImg}>
       <Header zoom={zoom} />
       <Player tracks={data.tracks} setDancing={() => setDancing(!dancing)} />
       <Footer onClick={() => openInNewTab('https://github.com/joelkperkins/Soft-Boys-Club-Radio')}>
         Wanna see how it works? 
         <AiFillGithub size='1.3em'/> 
-        'v0.1.6'
+        'v0.2.0'
       </Footer>
     </Body>
   );
@@ -167,7 +177,7 @@ const Body = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: ${props => props.height};
+  height: ${props => props.$height};
   background-color: black;
   overflow: hidden;
   display: flex;
@@ -175,22 +185,22 @@ const Body = styled.div`
   align-items: center;
 
   @media only screen and (orientation: portrait) {
-    ${props => props.img && props.header &&
+    ${props => props.$img && props.$header &&
       `background: 
-        url(${props.img}) black center no-repeat;
+        url(${props.$img}) black center no-repeat;
       `
     }
-    ${props => props.img && `background-size: 650px`}
+    ${props => props.$img && `background-size: 650px`}
   }
 
 
   @media (min-width: 800px) {
-    ${props => props.img && props.header &&
+    ${props => props.$img && props.$header &&
       `background:
-        url(${props.img}) black center no-repeat;
+        url(${props.$img}) black center no-repeat;
       `
     }
-    ${props => props.img && `background-size: 650px`}
+    ${props => props.$img && `background-size: 650px`}
   }
 `;
 

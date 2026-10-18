@@ -73,14 +73,19 @@ const Disco = ({spinTheBall}) => {
         discoBall.appendChild(square);
       }
     }
-  })
+
+    // build the ball once, and clear the tiles when it's removed
+    return () => {
+      discoBall.querySelectorAll('.square').forEach(square => square.remove());
+    };
+  }, [])
 
   return (
     <Container>
       <Light id="discoBallLight"></Light>
       <Dangle />
-      <DiscoBall id="ball" spinTheBall={spinTheBall}>
-        <DiscoBallMiddle spinTheBall={spinTheBall} />
+      <DiscoBall id="ball" $spinTheBall={spinTheBall}>
+        <DiscoBallMiddle $spinTheBall={spinTheBall} />
       </DiscoBall>
     </Container>
   )
@@ -109,7 +114,7 @@ const Dangle = styled.div`
   height: 100px;
   border: 3px dotted white; 
   transform: translate(50px, -120px);
-  animation: ${props => props.spinTheBall && 'rotateDiscoBall 18s linear infinite'};
+  animation: ${props => props.$spinTheBall && 'rotateDiscoBall 18s linear infinite'};
 
 `;
 
@@ -119,7 +124,7 @@ const DiscoBall = styled.div`
   height: 100px;
   position: relative;
 
-  animation: ${props => props.spinTheBall && 'rotateDiscoBall 18s linear infinite'};
+  animation: ${props => props.$spinTheBall && 'rotateDiscoBall 18s linear infinite'};
 `;
 
 const DiscoBallMiddle = styled.div` 
@@ -128,7 +133,7 @@ const DiscoBallMiddle = styled.div`
   position: relative;
   background-color: rgb(255, 255, 255, .8); 
   background: linear-gradient(top, #111, #333);
-  animation: ${props => props.spinTheBall && 'rotateDiscoBall 18s linear infinite'};
+  animation: ${props => props.$spinTheBall && 'rotateDiscoBall 18s linear infinite'};
 `
 
 

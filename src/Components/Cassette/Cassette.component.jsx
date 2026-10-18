@@ -54,8 +54,8 @@ const Cassette = ({activeTrack, track, index, constraintsRef, reduced, setActive
       }
     }
 
-    const unsubscribeY = y.onChange(checkActive);
-    const unsubscribeX = x.onChange(checkActive);
+    const unsubscribeY = y.on("change", checkActive);
+    const unsubscribeX = x.on("change", checkActive);
 
     return () => {
       unsubscribeY();

@@ -30,12 +30,14 @@ const Player = ({ tracks, setDancing }) => {
   }) : [];
 
   const DiscoBall = activeTrack === null ?  null :  <Disco spinTheBall={spinTheBall} />;
+  // loaded, but no streams are live
+  const nothingOnAir = Array.isArray(tracks) && tracks.length === 0;
 
   return (
     <Container>
       <motion.div className="drag-area" ref={constraintsRef}>
         <Bottom $activeTrack={activeTrack}>
-          <Radio activeTrack={activeTrack} setActiveTrack={(e) => setActiveTrack(e)} setSpinTheBall={() => setSpinTheBall(!spinTheBall)} setDancing={() => setDancing()}/>
+          <Radio activeTrack={activeTrack} nothingOnAir={nothingOnAir} setActiveTrack={(e) => setActiveTrack(e)} setSpinTheBall={() => setSpinTheBall(!spinTheBall)} setDancing={() => setDancing()}/>
         </Bottom>
         <Top>
           {Cassettes}

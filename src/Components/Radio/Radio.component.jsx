@@ -10,7 +10,7 @@ import { GiPlayButton, GiPauseButton } from 'react-icons/gi';
 import { MdEject } from 'react-icons/md';
 import axios from 'axios';
 
-const Radio = ({activeTrack, setActiveTrack, setSpinTheBall, setDancing}) => {
+const Radio = ({activeTrack, nothingOnAir, setActiveTrack, setSpinTheBall, setDancing}) => {
   const [status, setStatus] = useState('EMPTY');
   const [audio, setAudio] = useState(null);
   const [playing, setPlaying] = useState(false);
@@ -29,7 +29,7 @@ const Radio = ({activeTrack, setActiveTrack, setSpinTheBall, setDancing}) => {
   }, [activeTrack]);
 
   const statusBank = {
-    EMPTY: 'Please load a tape!',
+    EMPTY: nothingOnAir ? 'Nothing on air right now' : 'Please load a tape!',
     PLAYING: `Now Playing: ${nowPlaying}`,
     LOADED: `Press Play?`
   };

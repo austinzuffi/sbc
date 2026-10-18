@@ -93,7 +93,8 @@ const getTracks = (source) => {
 
 
 const App = () => {
-  const [data, setData] = useState({ tracks: [] });
+  // tracks stays null until icecast answers
+  const [data, setData] = useState({ tracks: null });
   const [poster, setPoster] = useState('');
   const [gif, setGif] = useState('');
   const [zoom, setZoom] = useState('');

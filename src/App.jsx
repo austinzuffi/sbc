@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 // components
 import Player from './Components/Player/Player.component';
 import Header from './Components/Header.component';
+import Crayons from './Components/Crayons.component';
 
 // libraires
 import styled from 'styled-components';
@@ -12,6 +13,17 @@ import { AiFillGithub } from 'react-icons/ai';
 import headerImg from './Images/text.png';
 import { fetchStations, defaultTracks } from './stations';
 
+// color themes; the colors themselves are in index.css
+const THEMES = ['classic', 'walnut', 'shore'];
+const savedTheme = () => {
+  try {
+    const t = localStorage.getItem('sbc.theme');
+    return THEMES.includes(t) ? t : THEMES[0];
+  } catch {
+    return THEMES[0];
+  }
+};
+
 const App = () => {
   // tracks stays null until icecast answers
   const [tracks, setTracks] = useState(null);
@@ -20,6 +32,20 @@ const App = () => {
   const [height, setHeight] = useState('100vh');
   const [dancing, setDancing] = useState(false);
   const [activeBg, setActiveBg] = useState('');
+  const [theme, setTheme] = useState(savedTheme);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    try {
+      localStorage.setItem('sbc.theme', theme);
+    } catch {
+      // private browsing: the theme just isn't remembered
+    }
+    // the phone's browser bar matches the page
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = getComputedStyle(root).getPropertyValue('--page').trim();
+  }, [theme]);
 
   // Keep the station list current: a DJ going live shows up as a new tape, a station that
   // stops loses its tape, and the song titles follow along.
@@ -85,6 +111,7 @@ const App = () => {
   return (
     <Body id="main" $height={height} $img={activeBg} $header={headerImg}>
       <Header />
+      <Crayons themes={THEMES} theme={theme} setTheme={setTheme} />
       <Player
         tracks={tracks && tracks.filter((t) => t.kind !== 'video')}
         channels={tracks ? tracks.filter((t) => t.kind === 'video') : []}
@@ -98,7 +125,10 @@ const App = () => {
         <FooterLink href="https://github.com/joelkperkins/Soft-Boys-Club-Radio" target="_blank" rel="noopener noreferrer">
           with &lt;3 Warlock and Bird
         </FooterLink>
-        <span>v0.2.1</span>
+        <ThemeButton type="button" title="Change the colors" onClick={() => setTheme(THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length])}>
+          theme: {theme}
+        </ThemeButton>
+        <Wide>v0.2.1</Wide>
       </Footer>
     </Body>
   );
@@ -110,7 +140,8 @@ const Body = styled.div`
   left: 0;
   width: 100vw;
   height: ${props => props.$height};
-  background-color: black;
+  background-color: var(--page);
+  background-image: var(--page-image);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -119,7 +150,7 @@ const Body = styled.div`
   @media only screen and (orientation: portrait) {
     ${props => props.$img && props.$header &&
       `background: 
-        url(${props.$img}) black center no-repeat;
+        url(${props.$img}) var(--page) center no-repeat;
       `
     }
     ${props => props.$img && `background-size: 650px`}
@@ -129,7 +160,7 @@ const Body = styled.div`
   @media (min-width: 800px) {
     ${props => props.$img && props.$header &&
       `background:
-        url(${props.$img}) black center no-repeat;
+        url(${props.$img}) var(--page) center no-repeat;
       `
     }
     ${props => props.$img && `background-size: 650px`}
@@ -143,9 +174,13 @@ const Footer = styled.div`
   right: 0;
   width: 100%;
   font-family: 'Courier New';
-  color: gray;
-  background-color: black;
+  color: var(--footer-fg);
+  background-color: var(--footer-bg);
   padding: 0 .25rem;
+
+  @media (max-width: 700px) {
+    font-size: .7rem;
+  }
 
   display: flex;
   justify-content: space-evenly;
@@ -161,11 +196,27 @@ const FooterLink = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: white;
+    color: var(--footer-hover);
   }
 `
 
-// the question is dropped on phones so the credit fits on one line
+// phones have no room for the crayons, so the theme is changed from the footer there
+const ThemeButton = styled.button`
+  display: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+
+  @media (max-width: 799px), (orientation: portrait) {
+    display: block;
+  }
+`
+
+// the question and the version are dropped on phones so the rest fits on one line
 const Wide = styled.span`
   @media (max-width: 700px) {
     display: none;

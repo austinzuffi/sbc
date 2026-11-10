@@ -1,9 +1,168 @@
+/* Color themes. The crayons under RADIO (or the footer button on phones) switch
+   <html data-theme="...">. To add one: copy a block, rename it, add the name to THEMES
+   in App.jsx and give it a crayon in Crayons.component.jsx. */
+:root {
+  --page: black;
+  --page-image: none;
+  --footer-bg: black;
+  --footer-fg: gray;
+  --footer-hover: white;
+  --banner: #f7f5f7;
+  --banner-ink: black;
+  --badge: black;
+  --badge-ink: pink;
+
+  --tape: #E9573F;
+  --tape-edge: white;
+  --tape-label: #fffd82;
+  --tape-ink: black;
+  --tape-hole: black;
+  --tape-reel: white;
+
+  --radio: #E0B650;
+  --radio-edge: #FFE186;
+  --radio-inset: #DEC38C;
+  --screen: #1CB676;
+  --screen-ink: black;
+  --slot: black;
+  --slot-ink: white;
+  --slider: #1CB676;
+
+  --btn: white;
+  --btn-ink: black;
+  --btn-edge: lightgray;
+  --play: #29A745;
+  --play-ink: #1eff4f;
+  --pause: #FFC107;
+  --pause-ink: #fff600;
+  --eject: #2F8F83;
+  --eject-ink: white;
+
+  --tv: #2F8F83;
+  --tv-edge: #7CC7B8;
+  --tv-inset: #DEC38C;
+  --tv-dark: #1D5B53;
+  --tv-foot: #1D5B53;
+  --tv-label: #F3F6F9;
+  --antenna: #F3F6F9;
+  --knob: #FFE186;
+  --knob-edge: #E0B650;
+  --osd: #1eff4f;
+  --switch-on: #29A745;
+  --power-on: #E9573F;
+}
+
+/* walnut: warm ivory #E5DFD2, soft cream #D9C797, muted olive #B1AC7A, honey gold #C39A60,
+   caramel brown #987044, dark walnut #594237, espresso #302625 */
+:root[data-theme="walnut"] {
+  --page: #302625;
+  --footer-bg: #302625;
+  --footer-fg: #B1AC7A;
+  --footer-hover: #E5DFD2;
+  --banner: #E5DFD2;
+  --banner-ink: #302625;
+  --badge: #594237;
+  --badge-ink: #D9C797;
+
+  --tape: #987044;
+  --tape-edge: #E5DFD2;
+  --tape-label: #D9C797;
+  --tape-ink: #302625;
+  --tape-hole: #302625;
+  --tape-reel: #E5DFD2;
+
+  --radio: #C39A60;
+  --radio-edge: #D9C797;
+  --radio-inset: #E5DFD2;
+  --screen: #B1AC7A;
+  --screen-ink: #302625;
+  --slot: #302625;
+  --slot-ink: #E5DFD2;
+  --slider: #594237;
+
+  --btn: #E5DFD2;
+  --btn-ink: #302625;
+  --btn-edge: #D9C797;
+  --play: #B1AC7A;
+  --play-ink: #302625;
+  --pause: #987044;
+  --pause-ink: #E5DFD2;
+  --eject: #594237;
+  --eject-ink: #E5DFD2;
+
+  --tv: #594237;
+  --tv-edge: #987044;
+  --tv-inset: #D9C797;
+  --tv-dark: #302625;
+  --tv-foot: #987044;
+  --tv-label: #E5DFD2;
+  --antenna: #E5DFD2;
+  --knob: #D9C797;
+  --knob-edge: #C39A60;
+  --osd: #E5DFD2;
+  --switch-on: #B1AC7A;
+  --power-on: #C39A60;
+}
+
+/* shore: cloud blue #E5EDF8, pale blush #F3E3E4, mist blue #B9C9D4, sea-glass gray #A5B4B1,
+   muted teal #647D7D. The palette has no dark color, so #232C2C is the teal darkened. */
+:root[data-theme="shore"] {
+  --page: #E5EDF8;
+  --page-image: linear-gradient(#E5EDF8, #F3E3E4);
+  --footer-bg: #232C2C;
+  --footer-fg: #A5B4B1;
+  --footer-hover: #E5EDF8;
+  --banner: #647D7D;
+  --banner-ink: #E5EDF8;
+  --badge: #232C2C;
+  --badge-ink: #F3E3E4;
+
+  --tape: #B9C9D4;
+  --tape-edge: #647D7D;
+  --tape-label: #F3E3E4;
+  --tape-ink: #232C2C;
+  --tape-hole: #232C2C;
+  --tape-reel: #E5EDF8;
+
+  --radio: #A5B4B1;
+  --radio-edge: #B9C9D4;
+  --radio-inset: #E5EDF8;
+  --screen: #232C2C;
+  --screen-ink: #F3E3E4;
+  --slot: #232C2C;
+  --slot-ink: #E5EDF8;
+  --slider: #647D7D;
+
+  --btn: #E5EDF8;
+  --btn-ink: #232C2C;
+  --btn-edge: #B9C9D4;
+  --play: #647D7D;
+  --play-ink: #F3E3E4;
+  --pause: #F3E3E4;
+  --pause-ink: #647D7D;
+  --eject: #232C2C;
+  --eject-ink: #E5EDF8;
+
+  --tv: #647D7D;
+  --tv-edge: #A5B4B1;
+  --tv-inset: #E5EDF8;
+  --tv-dark: #232C2C;
+  --tv-foot: #232C2C;
+  --tv-label: #E5EDF8;
+  --antenna: #647D7D;
+  --knob: #F3E3E4;
+  --knob-edge: #B9C9D4;
+  --osd: #F3E3E4;
+  --switch-on: #232C2C;
+  --power-on: #232C2C;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: Helvetica, Arial, sans-serif;
   display: grid;
-  background: #333e5a;
+  background: var(--page);
 }
 
 #root {

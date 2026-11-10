@@ -221,8 +221,8 @@ const RadioMain = styled.div`
 `;
 
 const THEMERADIOMAINGOTH = styled(RadioMain)`
-  background: #E0B650;
-  border: outset .4rem #FFE186;
+  background: var(--radio);
+  border: outset .4rem var(--radio-edge);
 `;
 
 const RadioInsert = styled.div`
@@ -236,7 +236,7 @@ const RadioInsert = styled.div`
 `;
 
 const THEMERADIOINSERTGOTH = styled(RadioInsert)`
-  background: #DEC38C;
+  background: var(--radio-inset);
 `
 
 const Screen = styled.div`
@@ -254,14 +254,14 @@ const Screen = styled.div`
 `;
 
 const THEMESCREENGOTH = styled(Screen)`
-  background: #1CB676;
-  color: black;
+  background: var(--screen);
+  color: var(--screen-ink);
 `
 
 const Insert = styled.div`
   width: 100%;
   height: 4rem;
-  background: black;
+  background: var(--slot);
   border-radius: .3rem;
   border-left: inset .5rem darkgray;
   border-bottom: inset .5rem darkgray;
@@ -272,9 +272,9 @@ const Insert = styled.div`
 `;
 
 const THEMEINSERTGOTH = styled(Insert)`
-  border-left: inset .5rem #FFE186;
-  border-bottom: inset .5rem #FFE186;
-  color: white;
+  border-left: inset .5rem var(--radio-edge);
+  border-bottom: inset .5rem var(--radio-edge);
+  color: var(--slot-ink);
 `
 
 const RadioButtons = styled.div`
@@ -291,7 +291,7 @@ const Volume = styled.input`
   margin: 0;
   writing-mode: vertical-lr;
   direction: rtl;
-  accent-color: #1CB676;
+  accent-color: var(--slider);
   cursor: pointer;
 `;
 
@@ -309,8 +309,8 @@ const RadioBody = styled.div`
 `;
 
 const THEMEBODYGOTH = styled(RadioBody)`
-  background: #E0B650;
-  border: outset .3rem #FFE186;
+  background: var(--radio);
+  border: outset .3rem var(--radio-edge);
 `
 
 const Play = styled.button`
@@ -319,8 +319,8 @@ const Play = styled.button`
   display: flex;
   justify-content: center;
   border-radius: 2rem .5rem .5rem .5rem;
-  border-bottom: outset .3rem lightgray;
-  border-right: outset .3rem lightgray;
+  border-bottom: outset .3rem var(--btn-edge);
+  border-right: outset .3rem var(--btn-edge);
   transform: skew(-30deg, 0deg);
   height: 2rem;
   width: 4rem;
@@ -328,13 +328,13 @@ const Play = styled.button`
 
 
 const PlayActive = styled(Play)`
-  background-color: #29A745;
-  color: #1eff4f;
+  background-color: var(--play);
+  color: var(--play-ink);
 `;
 
 const PlayInactive = styled(Play)`
-  background-color:white;
-  color: black;
+  background-color: var(--btn);
+  color: var(--btn-ink);
 `;
 
 const Pause = styled.button`
@@ -343,21 +343,21 @@ const Pause = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: .5rem;
-  border-bottom: outset .3rem lightgray;
-  border-right: outset .3rem lightgray;
+  border-bottom: outset .3rem var(--btn-edge);
+  border-right: outset .3rem var(--btn-edge);
   transform: skew(-30deg, 0deg);
   height: 2rem;
   width: 4rem;
 `;
 
 const PauseActive = styled(Pause)`
-  background-color: #FFC107;
-  color: #fff600;
+  background-color: var(--pause);
+  color: var(--pause-ink);
 `;
 
 const PauseInactive = styled(Pause)`
-  background-color: white;
-  color: black;
+  background-color: var(--btn);
+  color: var(--btn-ink);
 `;
 
 const Eject = styled.button`
@@ -366,21 +366,21 @@ const Eject = styled.button`
   display: flex;
   justify-content: center;
   border-radius: .5rem;
-  border-bottom: outset .3rem lightgray;
-  border-right: outset .3rem lightgray;
+  border-bottom: outset .3rem var(--btn-edge);
+  border-right: outset .3rem var(--btn-edge);
   transform: skew(-30deg, 0deg);
   height: 2rem;
   width: 8rem;
 `;
 
 const EjectActive = styled(Eject)`
-  background-color: #19A2B8;
-  color: white;
+  background-color: var(--eject);
+  color: var(--eject-ink);
 `;
 
 const EjectInactive = styled(Eject)`
-  background-color: white;
-  color: black;
+  background-color: var(--btn);
+  color: var(--btn-ink);
 `;
 
 

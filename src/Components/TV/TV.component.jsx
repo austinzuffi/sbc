@@ -125,7 +125,7 @@ const Antenna = styled.div`
   left: 50%;
   width: .25rem;
   height: 4.5rem;
-  background: #F3F6F9;
+  background: var(--antenna);
   border-radius: .2rem;
   transform-origin: bottom center;
   transform: rotate(${(props) => props.$tilt}deg);
@@ -136,16 +136,16 @@ const Cabinet = styled.div`
   align-items: stretch;
   width: 19.2rem;
   padding: .9rem;
-  background: #19A2B8;
-  border: outset .3rem #7fd8e6;
+  background: var(--tv);
+  border: outset .3rem var(--tv-edge);
   border-radius: 1.5rem 1.5rem 1rem 1rem;
 `;
 
 const Tube = styled.div`
   flex: 1;
   padding: .6rem;
-  background: #DEC38C;
-  border: inset .3rem #7fd8e6;
+  background: var(--tv-inset);
+  border: inset .3rem var(--tv-edge);
   border-radius: 1rem;
 `;
 
@@ -186,7 +186,7 @@ const Osd = styled.div`
   left: 1rem;
   font-family: 'Press Start 2P', cursive;
   font-size: .5rem;
-  color: #1eff4f;
+  color: var(--osd);
   text-shadow: 0 0 .2rem black;
 `;
 
@@ -198,7 +198,7 @@ const Message = styled.div`
   justify-content: center;
   font-family: 'Press Start 2P', cursive;
   font-size: .6rem;
-  color: #1eff4f;
+  color: var(--osd);
   text-shadow: 0 0 .3rem black, 0 0 .3rem black;
 `;
 
@@ -221,7 +221,7 @@ const Label = styled.div`
   margin: .2rem 0 .6rem;
   font-family: 'Press Start 2P', cursive;
   font-size: .35rem;
-  color: #F3F6F9;
+  color: var(--tv-label);
 `;
 
 const Knob = styled.button`
@@ -229,8 +229,8 @@ const Knob = styled.button`
   height: 3rem;
   padding: 0;
   border-radius: 50%;
-  background: #FFE186;
-  border: outset .3rem #E0B650;
+  background: var(--knob);
+  border: outset .3rem var(--knob-edge);
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -241,7 +241,7 @@ const Knob = styled.button`
 const KnobMark = styled.div`
   width: .25rem;
   height: 1rem;
-  background: black;
+  background: var(--btn-ink);
   border-radius: .2rem;
 `;
 
@@ -250,9 +250,9 @@ const Switch = styled.button`
   height: 1.2rem;
   padding: 0;
   border-radius: .4rem;
-  border: outset .2rem lightgray;
+  border: outset .2rem var(--btn-edge);
   cursor: pointer;
-  background: ${(props) => (props.$on ? '#29A745' : 'white')};
+  background: ${(props) => (props.$on ? 'var(--switch-on)' : 'var(--btn)')};
 `;
 
 const Grille = styled.div`
@@ -260,7 +260,7 @@ const Grille = styled.div`
   width: 3.2rem;
   min-height: 1.5rem;
   margin-bottom: .6rem;
-  background: repeating-linear-gradient(#0e6272 0 .2rem, transparent .2rem .5rem);
+  background: repeating-linear-gradient(var(--tv-dark) 0 .2rem, transparent .2rem .5rem);
 `;
 
 const Power = styled.button`
@@ -268,9 +268,9 @@ const Power = styled.button`
   height: 1.8rem;
   padding: 0;
   border-radius: 50%;
-  border: outset .25rem lightgray;
+  border: outset .25rem var(--btn-edge);
   cursor: pointer;
-  background: ${(props) => (props.$on ? '#ee4266' : 'white')};
+  background: ${(props) => (props.$on ? 'var(--power-on)' : 'var(--btn)')};
 `;
 
 const Feet = styled.div`
@@ -282,7 +282,7 @@ const Feet = styled.div`
 const Foot = styled.div`
   width: 2.5rem;
   height: .8rem;
-  background: #0e6272;
+  background: var(--tv-foot);
   border-radius: 0 0 .5rem .5rem;
 `;
 

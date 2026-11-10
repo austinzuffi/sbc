@@ -32,16 +32,16 @@ const Banner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: #f7f5f7;
+  background-color: var(--banner);
   padding-left: .5rem;
 `;
 
 const Letter = styled.div`
   font-family: 'Arima Madurai', cursive;
-  color: black;
+  color: var(--banner-ink);
   font-size: 1.7rem;
   font-weight: 800;
-  background-color: #f7f5f7;
+  background-color: var(--banner);
 `;
 
 const RadioBox = styled.a`
@@ -49,11 +49,11 @@ const RadioBox = styled.a`
     transform: rotate(-5deg);
     width: 20%;
     height: 3rem;
-    background-color: black;
+    background-color: var(--badge);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: .1rem solid pink;
+    border: .1rem solid var(--badge-ink);
     border-radius: .5rem;
     position: absolute;
     right: 0;
@@ -65,11 +65,11 @@ const RadioBox = styled.a`
     transform: rotate(-4deg);
     width: 20%;
     height: 4rem;
-    background-color: black;
+    background-color: var(--badge);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: .3rem solid pink;
+    border: .3rem solid var(--badge-ink);
     position: absolute;
     right: 0;
     top: 2rem;
@@ -78,7 +78,7 @@ const RadioBox = styled.a`
 `;
 
 const Radio = styled.div`
-  color: pink;
+  color: var(--badge-ink);
   padding: 0;
   margin: 0;
   font-family: 'Dosis', cursive;

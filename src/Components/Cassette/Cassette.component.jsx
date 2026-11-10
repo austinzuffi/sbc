@@ -86,13 +86,13 @@ const Title = styled.div`
   text-align: center;
   font-family: 'Rock Salt', cursive;
   font-size: .6rem;
-  color: black;
+  color: var(--tape-ink);
   width: 90%;
   height: 3rem;
-  border: solid .1rem black;
+  border: solid .1rem var(--tape-ink);
   border-radius: .3rem;
   padding: .3rem;
-  background: #fffd82;
+  background: var(--tape-label);
 `;
 
 // const THEME_TITLE = styled(Title)`
@@ -114,10 +114,10 @@ const CassetteOpen = styled.div`
   align-items: center;
   align-content: center;
   cursor: pointer;
-  border: double .3rem white;
+  border: double .3rem var(--tape-edge);
   border-radius: .5rem;
   overflow: hidden;
-  background: #ee4266;
+  background: var(--tape);
 `;
 
 // const THEME_CASSETTE_OPEN = styled(CassetteOpen)`
@@ -136,12 +136,12 @@ const CassetteClosed = styled.div`
   align-items: center;
   align-content: center;
   cursor: pointer;
-  border-top: double .3rem white;
-  border-left: double .3rem white;
-  border-right: double .3rem white;
+  border-top: double .3rem var(--tape-edge);
+  border-left: double .3rem var(--tape-edge);
+  border-right: double .3rem var(--tape-edge);
   border-radius: .5rem;
   overflow: hidden;
-  background: #ee4266;
+  background: var(--tape);
 `;
 
 // const THEME_CASSETTE_CLOSED = styled(CassetteClosed)`
@@ -155,10 +155,10 @@ const CassetteBottom = styled.div`
   display: flex;
   justify-content: center;
   width: 12rem;
-  border: solid .1rem black;
+  border: solid .1rem var(--tape-ink);
   border-radius: .3rem;
   height: 1.3rem;
-  background: #fffd82;
+  background: var(--tape-label);
 `;
 
 // const THEME_CASSETTE_BOTTOM = styled(CassetteBottom)`
@@ -180,9 +180,9 @@ const Holes = styled.div`
 const Hole = styled.div`
   width: 2rem;
   height: 2rem;
-  background: black;
+  background: var(--tape-hole);
   border-radius: 50%;
-  border: dashed .3rem white;
+  border: dashed .3rem var(--tape-reel);
 `;
 
 // const THEME_HOLE = styled(Hole)`

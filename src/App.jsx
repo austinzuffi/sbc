@@ -90,10 +90,15 @@ const App = () => {
         channels={tracks ? tracks.filter((t) => t.kind === 'video') : []}
         setDancing={setDancing}
       />
-      <Footer href="https://github.com/austinzuffi/sbc" target="_blank" rel="noopener noreferrer">
-        Wanna see how it works?
-        <AiFillGithub size='1.3em'/>
-        v0.2.1
+      <Footer>
+        <FooterLink href="https://github.com/austinzuffi/sbc" target="_blank" rel="noopener noreferrer">
+          <Wide>Wanna see how it works?</Wide>
+          <AiFillGithub size='1.3em'/>
+        </FooterLink>
+        <FooterLink href="https://github.com/joelkperkins/Soft-Boys-Club-Radio" target="_blank" rel="noopener noreferrer">
+          with &lt;3 Warlock and Bird
+        </FooterLink>
+        <span>v0.2.1</span>
       </Footer>
     </Body>
   );
@@ -131,8 +136,7 @@ const Body = styled.div`
   }
 `;
 
-const Footer = styled.a`
-  text-decoration: none;
+const Footer = styled.div`
   position: fixed;
   height: 1.2rem;
   bottom: 0;
@@ -146,6 +150,26 @@ const Footer = styled.a`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+`
+
+const FooterLink = styled.a`
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  white-space: nowrap;
+
+  &:hover {
+    color: white;
+  }
+`
+
+// the question is dropped on phones so the credit fits on one line
+const Wide = styled.span`
+  @media (max-width: 700px) {
+    display: none;
+  }
 `
 
 export default App;

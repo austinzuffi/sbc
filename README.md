@@ -58,3 +58,4 @@ The station URLs are baked in at build time from the `REACT_APP_*` variables in 
 * v0.1.4 : Used the site for a fundraiser!
 * v0.1.5 : Imagine a disco ball...
 * v0.2.0 : Moved from Create React App to Vite, upgraded to React 19
+* v0.2.1 : Stream reconnects by itself, tapes load with a tap, live station list, lock-screen controls, volume

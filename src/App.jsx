@@ -1,4 +1,3 @@
-// jshint ignore: start
 import React, { useState, useEffect } from 'react';
 
 // components
@@ -6,139 +5,67 @@ import Player from './Components/Player/Player.component';
 import Header from './Components/Header.component';
 
 // libraires
-import axios from 'axios';
 import styled from 'styled-components';
 import { AiFillGithub } from 'react-icons/ai';
 
 // resouces
 import headerImg from './Images/text.png';
-
-const sslUrl = (trackUrl) => {
-  let keyUrl = !trackUrl ? null : trackUrl.slice(trackUrl.lastIndexOf('/'));
-  return import.meta.env.REACT_APP_ICECAST_URL + keyUrl;
-};
-
-const getTracks = (source) => {
-  //implement in the future
-  const onetape = false;
-  if (onetape === true ) {
-    return source.reduce((acc, curr, index) => {
-      if (curr.title === 'Doomtown') {
-        acc.push({
-          id: 'track' + index,
-          genre: curr.genre || null,
-          title: curr.title || '<no track data>',
-          url: sslUrl(curr.listenurl),
-          date: curr.stream_start || null,
-          station: curr.server_name || null,
-          desc: curr.server_description || null,
-          heardBy: curr.listener_peak || null,
-          type: curr.server_type || null
-          });
-      }
-      return acc;
-    }, []);
-  }
-
-  const defaultTrack = {
-    id: 'jungle',
-    genre: null,
-    title: 'Jungle',
-    url: import.meta.env.REACT_APP_JUNGLE_STATION,
-    date: null,
-    station: null,
-    desc: null,
-    heardBy: null,
-    type: null
-  };
-  // the jungle tape only shows when its station is configured
-  const defaultTracks = defaultTrack.url ? [defaultTrack] : [];
-
-  // zero sources
-  if (!source) {
-    return defaultTracks;
-  }
-  //single source
-  if (!Array.isArray(source)) {
-
-    return [...defaultTracks, {
-      id: 'track0',
-      genre: source.genre || null,
-      title: source.title || '<no track data>',
-      url: sslUrl(source.listenurl),
-      date: source.stream_start || null,
-      station: source.server_name || null,
-      desc: source.server_description || null,
-      heardBy: source.listener_peak || null,
-      type: source.server_type || null
-    }];
-
-  //array of sources
-  } else {
-    const icecastTracks = source.map((s, i) => ({
-      id: 'track' + i,
-      genre: s.genre || null,
-      title: s.title || '<no track data>',
-      url: sslUrl(s.listenurl),
-      date: s.stream_start || null,
-      station: s.server_name || null,
-      desc: s.server_description || null,
-      heardBy: s.listener_peak || null,
-      type: s.server_type || null
-      })
-    );
-    return [...defaultTracks, ...icecastTracks]
-  } 
-};
-
+import { fetchStations, defaultTracks } from './stations';
 
 const App = () => {
   // tracks stays null until icecast answers
-  const [data, setData] = useState({ tracks: null });
+  const [tracks, setTracks] = useState(null);
   const [poster, setPoster] = useState('');
   const [gif, setGif] = useState('');
-  const [zoom, setZoom] = useState('');
   const [height, setHeight] = useState('100vh');
   const [dancing, setDancing] = useState(false);
   const [activeBg, setActiveBg] = useState('');
 
+  // Keep the station list current: a DJ going live shows up as a new tape, a station that
+  // stops loses its tape, and the song titles follow along.
   useEffect(() => {
-    const fetchData = async () => {
+    let alive = true;
+    let busy = false;
+    let timer;
+    const load = async () => {
+      if (busy) return;
+      busy = true;
+      clearTimeout(timer);
       try {
-        const result = await axios.get(
-          import.meta.env.REACT_APP_ICECAST_URL + "/status-json.xsl"
-        );
-        if (result.data) {
-          const response = {
-            adminEmail: result.data.icestats.admin,
-            tracks: getTracks(result.data.icestats.source)
-          };
-          setData(response);
-        }
+        const next = await fetchStations();
+        if (alive) setTracks(next);
       } catch (error) {
-        // icecast is unreachable, still show the default tape if there is one
+        // icecast is unreachable: keep the tapes we had, or show the default tape if there is one
         console.error(error);
-        setData({ tracks: getTracks(null) });
+        if (alive) setTracks((prev) => prev || defaultTracks());
       }
+      busy = false;
+      if (alive) timer = setTimeout(load, document.hidden ? 30000 : 10000);
     };
-    const getStuff = async () => {
-      await axios.get(import.meta.env.REACT_APP_DB_LINK)
-        .then(response => {
-          if (response && response.data && response.data.length > 0) {
-            setPoster(response.data.data[0].gigPoster);
-            setGif(response.data.data[1].gigPoster);
-            setZoom(response.data.data[0].zoomLink);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+    const onVisible = () => { if (!document.hidden) load(); };
+    load();
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      alive = false;
+      clearTimeout(timer);
+      document.removeEventListener('visibilitychange', onVisible);
     };
-    fetchData();
+  }, []);
+
+  useEffect(() => {
     // gig posters come from the db, skip when it isn't configured
-    if (import.meta.env.REACT_APP_DB_LINK) {
-      getStuff();
-    }
+    if (!import.meta.env.REACT_APP_DB_LINK) return;
+    fetch(import.meta.env.REACT_APP_DB_LINK)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.length > 0) {
+          setPoster(data.data[0].gigPoster);
+          setGif(data.data[1].gigPoster);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -155,19 +82,14 @@ const App = () => {
     }
   }, [dancing, gif, poster]);
 
-  const openInNewTab = url => {
-    var win = window.open(url, '_blank');
-    win.focus();
-  };
-
   return (
     <Body id="main" $height={height} $img={activeBg} $header={headerImg}>
-      <Header zoom={zoom} />
-      <Player tracks={data.tracks} setDancing={() => setDancing(!dancing)} />
-      <Footer onClick={() => openInNewTab('https://github.com/joelkperkins/Soft-Boys-Club-Radio')}>
-        Wanna see how it works? 
-        <AiFillGithub size='1.3em'/> 
-        'v0.2.0'
+      <Header />
+      <Player tracks={tracks} setDancing={setDancing} />
+      <Footer href="https://github.com/austinzuffi/sbc" target="_blank" rel="noopener noreferrer">
+        Wanna see how it works?
+        <AiFillGithub size='1.3em'/>
+        v0.2.1
       </Footer>
     </Body>
   );
@@ -205,7 +127,8 @@ const Body = styled.div`
   }
 `;
 
-const Footer = styled.div`
+const Footer = styled.a`
+  text-decoration: none;
   position: fixed;
   height: 1.2rem;
   bottom: 0;

@@ -2,54 +2,24 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useMotionValue } from "framer-motion";
 
-// function to get the x, y value of an element
-const getPos = (el) => {
-  for (var ly=0, lx=0; el != null; lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
-  return {x: lx, y: ly};
-};
-
-const checkY = (y, trackXY, thisTrack, raidoInsertXY, activeTrack) => {
-  if ((trackXY.current.y + y.get() + thisTrack.current.clientHeight >= raidoInsertXY.current.y) && (!activeTrack)) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-const checkX = (x, trackXY, thisTrack, raidoInsertXY, activeTrack) => {
-  if ((trackXY.current.x + x.get() + thisTrack.current.clientHeight >= raidoInsertXY.current.x) && (!activeTrack)) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-const Cassette = ({activeTrack, track, index, constraintsRef, reduced, setActiveTrack}) => {
-  const thisTrack = useRef();
-  const trackXY = useRef();
-  const raidoInsertXY = useRef();
+const Cassette = ({activeTrack, track, constraintsRef, reduced, setActiveTrack}) => {
+  const tape = useRef(null);
+  const pressedAt = useRef({ x: 0, y: 0 });
   const y = useMotionValue(0);
   const x = useMotionValue(0);
-
-  // gets the y values needed for track selection
-  useEffect(() => {
-    // get the track ele
-    thisTrack.current = document.getElementById(`track-key-${index}`);
-    // initial x, y value for track ele
-    trackXY.current = getPos(thisTrack.current);
-    // get track loader
-    const trackLoader = document.getElementById('insert-here');
-    // initial y value for the track loader
-    raidoInsertXY.current = getPos(trackLoader);
-    // the x, y value at the bottom of the track loader, use this as reference for when to set a track to active
-    raidoInsertXY.current.y += trackLoader.clientHeight;
-  }, [index]);
+  const name = track.station || track.title || 'Mystery Tape';
 
   // allows a user to set a track to active by dragging it to the loader
   useEffect(() => {
-    // uses the initial y value of the element + the amount it was dragged to determine if it has been dragged down to the track loader
+    if (reduced) return undefined;
+    // Measured while dragging, so it stays right after the window is resized or the phone is
+    // turned: the tape loads once its bottom edge is past the bottom of the slot and it is over it.
     function checkActive() {
-      if (checkY(y, trackXY, thisTrack, raidoInsertXY, activeTrack) && checkX(x, trackXY, thisTrack, raidoInsertXY, activeTrack)) {
+      const slot = document.getElementById('insert-here');
+      if (activeTrack || !tape.current || !slot) return;
+      const t = tape.current.getBoundingClientRect();
+      const s = slot.getBoundingClientRect();
+      if (t.bottom >= s.bottom && t.right >= s.left && t.left <= s.right) {
         setActiveTrack(track);
       }
     }
@@ -61,19 +31,45 @@ const Cassette = ({activeTrack, track, index, constraintsRef, reduced, setActive
       unsubscribeY();
       unsubscribeX();
     };
-  }, [activeTrack, setActiveTrack, track, x, y]);
+  }, [activeTrack, reduced, setActiveTrack, track, x, y]);
+
+  // a tap, click, Enter or Space loads the tape too
+  const load = () => {
+    if (!activeTrack) setActiveTrack(track);
+  };
+  const onTap = () => {
+    // letting go at the end of a drag is not a tap
+    if (Math.hypot(x.get() - pressedAt.current.x, y.get() - pressedAt.current.y) < 6) load();
+  };
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      load();
+    }
+  };
 
   if (reduced) {
     return (
       <CassetteClosed>
         <Title>{track.genre || 'Just Chill'}</ Title>
-      </CassetteClosed> 
+      </CassetteClosed>
     )
-  } else if (activeTrack === null || activeTrack.station !== track.station) {
+  } else if (activeTrack === null || activeTrack.id !== track.id) {
     return (
-      <motion.div id={`track-key-${index}`} drag style={{ x, y }} dragConstraints={constraintsRef} >
+      <motion.div
+        ref={tape}
+        drag
+        style={{ x, y }}
+        dragConstraints={constraintsRef}
+        onPointerDown={() => { pressedAt.current = { x: x.get(), y: y.get() }; }}
+        onTap={onTap}
+        onKeyDown={onKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-label={`Load the ${name} tape`}
+      >
         <CassetteOpen>
-        <Title>{track.station || track.title}</ Title>
+        <Title>{name}</ Title>
           <Holes>
               <Hole ></Hole >
               <Hole ></Hole >
@@ -83,6 +79,7 @@ const Cassette = ({activeTrack, track, index, constraintsRef, reduced, setActive
       </motion.div>
     );
   }
+  return null;
 }
 
 const Title = styled.div`

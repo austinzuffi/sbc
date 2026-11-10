@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 
 // components
 import Cassette from '../Cassette/Cassette.component';
@@ -8,124 +8,200 @@ import styled from 'styled-components';
 import { motion } from "framer-motion";
 import { GiPlayButton, GiPauseButton } from 'react-icons/gi';
 import { MdEject } from 'react-icons/md';
-import axios from 'axios';
 
-// a stream without a song title still shows something sensible
-const nowPlayingText = (source) => (source && (source.title || source.server_name)) || 'Unknown track';
+const VOLUME_KEY = 'sbc.volume';
+const savedVolume = () => {
+  try {
+    const v = parseFloat(localStorage.getItem(VOLUME_KEY));
+    return v >= 0 && v <= 1 ? v : 1;
+  } catch {
+    return 1;
+  }
+};
 
-const Radio = ({activeTrack, nothingOnAir, setActiveTrack, setSpinTheBall, setDancing}) => {
-  const [status, setStatus] = useState('EMPTY');
-  const [audio, setAudio] = useState(null);
-  const [playing, setPlaying] = useState(false);
-  const [nowPlaying, setNowPlaying] = useState('<LOADING>');
-  const intervalRef = useRef(null);
+// phase: idle (stopped) -> connecting -> playing, and reconnecting whenever the stream is lost
+const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChange}) => {
+  const audioRef = useRef(null);
+  const wantPlay = useRef(false);
+  const timers = useRef({ retry: null, stall: null, attempts: 0 });
+  const [phase, setPhase] = useState('idle');
+  const [volume, setVolume] = useState(savedVolume);
+
+  const url = activeTrack ? activeTrack.url : null;
+  const urlRef = useRef(url);
+  urlRef.current = url;
+  // a stream without a song title still shows something sensible
+  const nowPlaying = activeTrack ? (activeTrack.title || activeTrack.station || 'Unknown track') : '';
+  const station = activeTrack ? (activeTrack.station || 'Soft Boys Club Radio') : '';
+
+  const clearTimers = () => {
+    clearTimeout(timers.current.retry);
+    clearTimeout(timers.current.stall);
+  };
+
+  // Always opens a new connection, so play after a pause is live radio and not an old buffer.
+  const connect = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || !urlRef.current) return;
+    clearTimers();
+    audio.src = urlRef.current;
+    const started = audio.play();
+    if (started) {
+      started.catch((error) => {
+        // the browser wants a tap first; any other failure arrives as an error event
+        if (error && error.name === 'NotAllowedError') {
+          wantPlay.current = false;
+          setPhase('idle');
+        }
+      });
+    }
+  }, []);
+
+  // The stream ended or broke (icecast restarted, the DJ dropped, the phone lost signal):
+  // keep trying, waiting 1s, 2s, 4s ... up to 15s between tries, until it is back or someone hits pause.
+  const reconnect = useCallback(() => {
+    if (!wantPlay.current) return;
+    clearTimers();
+    setPhase('reconnecting');
+    const delay = Math.min(15000, 1000 * 2 ** timers.current.attempts);
+    timers.current.attempts += 1;
+    timers.current.retry = setTimeout(connect, delay);
+  }, [connect]);
+
+  const play = useCallback(() => {
+    if (!urlRef.current) return;
+    wantPlay.current = true;
+    timers.current.attempts = 0;
+    setPhase('connecting');
+    connect();
+  }, [connect]);
+
+  const stop = useCallback(() => {
+    wantPlay.current = false;
+    clearTimers();
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      // drop the connection instead of buffering a stream nobody is hearing
+      audio.removeAttribute('src');
+      audio.load();
+    }
+    setPhase('idle');
+  }, []);
 
   useEffect(() => {
-    if (activeTrack) {
-      //setNowPlaying(activeTrack.title); may be outdated by time of play
-      setStatus('LOADED');
-      setAudio(document.getElementById('audio'));
-    } else {
-      setStatus('EMPTY');
-      setAudio(null);
-    }
-  }, [activeTrack]);
-
-  const statusBank = {
-    EMPTY: nothingOnAir ? 'Nothing on air right now' : 'Please load a tape!',
-    PLAYING: `Now Playing: ${nowPlaying}`,
-    LOADED: `Press Play?`
-  };
-
-  const controlAudio = (input) => {
-    if (audio && input === 'play') {
-      audio.play();
-      setPlaying(true);
-      setStatus("PLAYING");
-      setSpinTheBall();
-      setDancing();
-    } else if (audio && input === 'pause') {
-      audio.pause();
-      setPlaying(false);
-      setStatus("LOADED");
-      //end the polling of new tracknames
-      clearInterval(intervalRef.current);
-      if (playing === true) {
-        setSpinTheBall();
-        setDancing();
+    const audio = audioRef.current;
+    const onPlaying = () => {
+      clearTimers();
+      timers.current.attempts = 0;
+      setPhase('playing');
+    };
+    // out of audio with nothing arriving for 12 seconds counts as a lost stream
+    const onWaiting = () => {
+      if (!wantPlay.current) return;
+      clearTimeout(timers.current.stall);
+      timers.current.stall = setTimeout(reconnect, 12000);
+    };
+    // paused from outside the page, like headphones being unplugged
+    const onPause = () => {
+      if (wantPlay.current && !audio.ended && !audio.error && audio.getAttribute('src')) stop();
+    };
+    const onOnline = () => {
+      if (wantPlay.current && audio.paused) {
+        timers.current.attempts = 0;
+        connect();
       }
+    };
+    audio.addEventListener('playing', onPlaying);
+    audio.addEventListener('waiting', onWaiting);
+    audio.addEventListener('error', reconnect);
+    audio.addEventListener('ended', reconnect);
+    audio.addEventListener('pause', onPause);
+    window.addEventListener('online', onOnline);
+    return () => {
+      audio.removeEventListener('playing', onPlaying);
+      audio.removeEventListener('waiting', onWaiting);
+      audio.removeEventListener('error', reconnect);
+      audio.removeEventListener('ended', reconnect);
+      audio.removeEventListener('pause', onPause);
+      window.removeEventListener('online', onOnline);
+    };
+  }, [connect, reconnect, stop]);
+
+  // the tape was ejected or swapped
+  useEffect(() => stop, [url, stop]);
+
+  const on = phase !== 'idle';
+  useEffect(() => {
+    onPlayingChange(on);
+  }, [on, onPlayingChange]);
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume;
+    try {
+      localStorage.setItem(VOLUME_KEY, String(volume));
+    } catch {
+      // private browsing: the volume just isn't remembered
     }
-  };
+  }, [volume]);
 
-  useEffect( 
-    () => {
-      const fetchData = async () => {
-        //NEED ICECAST TRACK INDEX
-        if (activeTrack) {
-          const icecastIndex = activeTrack.id.slice(-1);
+  // song title and play / pause on the lock screen and on headphone buttons
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+    navigator.mediaSession.setActionHandler('play', play);
+    navigator.mediaSession.setActionHandler('pause', stop);
+  }, [play, stop]);
 
-          const result = await axios.get(
-            import.meta.env.REACT_APP_ICECAST_URL + "/status-json.xsl"
-          );
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !window.MediaMetadata) return;
+    navigator.mediaSession.metadata = activeTrack ? new window.MediaMetadata({
+      title: nowPlaying,
+      artist: station,
+      album: 'Soft Boys Club Radio',
+      artwork: [{ src: '/android-chrome-256x256.png', sizes: '256x256', type: 'image/png' }]
+    }) : null;
+    navigator.mediaSession.playbackState = !activeTrack ? 'none' : on ? 'playing' : 'paused';
+  }, [activeTrack === null, nowPlaying, station, on]);
 
-          //IF ONE SOURCE, ICESTATS HAS NO ARRAY
-          if (Array.isArray(result.data.icestats.source)) {
-            setNowPlaying(nowPlayingText(result.data.icestats.source[icecastIndex]));
-          } else {
-            if (result.data.icestats.source) {
-              setNowPlaying(nowPlayingText(result.data.icestats.source));
-            } else {
-              setNowPlaying('We have no idea what is playing!');
-            }
-          }
-        }
-      };
-      if (playing) {
-        //update on play, then every 10 seconds
-        fetchData();
-        const id = setInterval(
-          () => {
-            fetchData(); 
-          }, 10000);
-        //save interval for cleanup
-        intervalRef.current = id;
-      }
-    }, [playing, activeTrack]
-  );
+  const screen = !activeTrack
+    ? (nothingOnAir ? 'Nothing on air right now' : 'Please load a tape!')
+    : {
+        idle: 'Press Play?',
+        connecting: 'Tuning in...',
+        playing: `Now Playing: ${nowPlaying}`,
+        reconnecting: offAir ? 'This station went off air. Waiting for it...' : 'Lost the signal. Retrying...'
+      }[phase];
+
+  const PlayButton = activeTrack ? PlayActive : PlayInactive;
+  const PauseButton = activeTrack ? PauseActive : PauseInactive;
+  const EjectButton = activeTrack ? EjectActive : EjectInactive;
 
   return (
     <THEMEBODYGOTH id="radio-body">
       <RadioButtons id="radio-buttons">
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} id="radio-button">
-          {activeTrack && <PlayActive onClick={() => controlAudio('play')}><GiPlayButton size='2em'/></PlayActive>}
-          {!activeTrack && <PlayInactive onClick={() => controlAudio('play')}><GiPlayButton size='2em'/></PlayInactive>}
+        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <PlayButton type="button" aria-label="Play" onClick={play}><GiPlayButton size='2em'/></PlayButton>
         </motion.div>
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} id="radio-button">
-          {activeTrack && <PauseActive  onClick={() => controlAudio('pause')}><GiPauseButton size='2em' /></PauseActive >}
-          {!activeTrack && <PauseInactive onClick={() => controlAudio('pause')}><GiPauseButton size='2em' /></PauseInactive>}
+        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <PauseButton type="button" aria-label="Pause" onClick={stop}><GiPauseButton size='2em' /></PauseButton>
         </motion.div>
-        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} id="radio-button">
-          {activeTrack && <EjectActive onClick={() => {
-            controlAudio('pause');
-            setActiveTrack(null)}
-          }>
-            < MdEject size='2em' />
-          </EjectActive>}
-          {!activeTrack && <EjectInactive onClick={() => {
-            controlAudio('pause');
-            setActiveTrack(null)}
-          }>
-            < MdEject size='2em' />
-          </EjectInactive>}
+        <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <EjectButton type="button" aria-label="Eject the tape" onClick={() => { stop(); setActiveTrack(null); }}>
+            <MdEject size='2em' />
+          </EjectButton>
         </motion.div>
       </RadioButtons>
+      <Volume
+        type="range" min="0" max="1" step="0.05" value={volume} aria-label="Volume"
+        onChange={(e) => setVolume(parseFloat(e.target.value))}
+      />
       <THEMERADIOMAINGOTH id="radio-insert">
         <THEMERADIOINSERTGOTH id="insert-here">
-          <THEMESCREENGOTH>{statusBank[status]}</THEMESCREENGOTH>
+          <THEMESCREENGOTH role="status">{screen}</THEMESCREENGOTH>
           {activeTrack ? <Cassette track={activeTrack} reduced={true} /> : <THEMEINSERTGOTH>------------------------------------</THEMEINSERTGOTH>}
         </THEMERADIOINSERTGOTH>
       </THEMERADIOMAINGOTH>
-      {activeTrack ? <audio id='audio' src={activeTrack.url} /> : <audio></audio> }
+      <audio ref={audioRef} preload="none" />
     </THEMEBODYGOTH>
   );
 }
@@ -205,8 +281,23 @@ const RadioButtons = styled.div`
   display: flex;
 `;
 
+const Volume = styled.input`
+  /* stands upright in the strip to the right of the tape deck; up is louder */
+  position: absolute;
+  right: .1rem;
+  bottom: 3.8rem;
+  height: 7rem;
+  width: 1rem;
+  margin: 0;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  accent-color: #1CB676;
+  cursor: pointer;
+`;
+
 const RadioBody = styled.div`
   order: 2;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;

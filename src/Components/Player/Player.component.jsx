@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // components
 import Radio from '../Radio/Radio.component';
@@ -12,19 +12,31 @@ import './Player.css';
 
 const Player = ({ tracks, setDancing }) => {
   const constraintsRef = useRef(null);
-  const [activeTrack, setActiveTrack] = useState(null);
+  // the tape as it was when it was loaded
+  const [loaded, setLoaded] = useState(null);
   const [spinTheBall, setSpinTheBall] = useState(false);
 
-  const Cassettes = (tracks && tracks.length) ? tracks.map((track, i) => {
-    if (activeTrack === null || activeTrack.station !== track.station) {
+  // The loaded tape's latest details (song title) from the station list. If its station has
+  // gone off air it stays in the radio, which keeps trying to tune back in.
+  const live = loaded && tracks ? tracks.find((t) => t.id === loaded.id) : null;
+  const activeTrack = loaded ? (live || loaded) : null;
+  const offAir = !!loaded && Array.isArray(tracks) && !live;
+
+  // the disco ball and the dancing background follow the music
+  useEffect(() => {
+    setDancing(spinTheBall);
+  }, [spinTheBall, setDancing]);
+
+  const Cassettes = (tracks && tracks.length) ? tracks.map((track) => {
+    if (activeTrack === null || activeTrack.id !== track.id) {
       return (
-        <Row tabIndex="0" key={`track#${i}`} >
-          <Cassette id={`track-${i}`} tabindex="-1" index={i} track={track} constraintsRef={constraintsRef} activeTrack={activeTrack} setActiveTrack={setActiveTrack} />
+        <Row key={track.id} >
+          <Cassette track={track} constraintsRef={constraintsRef} activeTrack={activeTrack} setActiveTrack={setLoaded} />
         </Row>
       )
     } else {
       return (
-        <Row key={`track#${i}`}></Row>
+        <Row key={track.id}></Row>
       )
     }
   }) : [];
@@ -37,7 +49,7 @@ const Player = ({ tracks, setDancing }) => {
     <Container>
       <motion.div className="drag-area" ref={constraintsRef}>
         <Bottom $activeTrack={activeTrack}>
-          <Radio activeTrack={activeTrack} nothingOnAir={nothingOnAir} setActiveTrack={(e) => setActiveTrack(e)} setSpinTheBall={() => setSpinTheBall(!spinTheBall)} setDancing={() => setDancing()}/>
+          <Radio activeTrack={activeTrack} nothingOnAir={nothingOnAir} offAir={offAir} setActiveTrack={setLoaded} onPlayingChange={setSpinTheBall} />
         </Bottom>
         <Top>
           {Cassettes}

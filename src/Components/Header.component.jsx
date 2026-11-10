@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { MdMoreHoriz } from 'react-icons/md'
 
-const Header = ({ zoom }) => {
+const Header = () => {
   return (
     <Banner>
       <Letter>S</Letter>
@@ -19,7 +19,7 @@ const Header = ({ zoom }) => {
       <Letter>L</Letter>
       <Letter>U</Letter>
       <Letter>B</Letter>
-      <RadioBox href={zoom} target="_blank">
+      <RadioBox href="https://pioneer.softboys.club" target="_blank" rel="noopener noreferrer">
         <Radio>RADIO</Radio>
       </RadioBox>
     </Banner>

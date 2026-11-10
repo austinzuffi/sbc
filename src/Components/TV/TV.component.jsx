@@ -56,6 +56,13 @@ const TV = ({ channels }) => {
     };
   }, [url]);
 
+  // double-click the picture for full screen, and again (or Esc) to come back
+  const toggleFullScreen = () => {
+    const video = videoRef.current;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (picture && video.requestFullscreen) video.requestFullscreen().catch(() => {});
+  };
+
   const nextChannel = () => {
     setClicks(clicks + 1);
     if (channels.length) setChannelId(channels[number % channels.length].id);
@@ -71,7 +78,7 @@ const TV = ({ channels }) => {
       <Antenna $tilt={24} />
       <Cabinet>
         <Tube>
-          <Glass $on={power}>
+          <Glass $on={power} onDoubleClick={toggleFullScreen} title={picture ? "Double-click for full screen" : undefined}>
             {power && !picture && <Static />}
             <Picture ref={videoRef} muted={!sound} playsInline $show={picture} />
             {power && channel && picture && <Osd>{`CH ${number} ${channel.station || ''}`}</Osd>}
@@ -127,7 +134,7 @@ const Antenna = styled.div`
 const Cabinet = styled.div`
   display: flex;
   align-items: stretch;
-  width: 24rem;
+  width: 19.2rem;
   padding: .9rem;
   background: #19A2B8;
   border: outset .3rem #7fd8e6;
@@ -169,6 +176,7 @@ const Picture = styled.video`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  &:fullscreen { object-fit: contain; background: black; }
   visibility: ${(props) => (props.$show ? 'visible' : 'hidden')};
 `;
 
@@ -266,7 +274,7 @@ const Power = styled.button`
 `;
 
 const Feet = styled.div`
-  width: 18rem;
+  width: 14rem;
   display: flex;
   justify-content: space-between;
 `;

@@ -85,7 +85,11 @@ const App = () => {
   return (
     <Body id="main" $height={height} $img={activeBg} $header={headerImg}>
       <Header />
-      <Player tracks={tracks} setDancing={setDancing} />
+      <Player
+        tracks={tracks && tracks.filter((t) => t.kind !== 'video')}
+        channels={tracks ? tracks.filter((t) => t.kind === 'video') : []}
+        setDancing={setDancing}
+      />
       <Footer href="https://github.com/austinzuffi/sbc" target="_blank" rel="noopener noreferrer">
         Wanna see how it works?
         <AiFillGithub size='1.3em'/>

@@ -4,13 +4,28 @@ import React, { useEffect, useRef, useState } from 'react';
 import Radio from '../Radio/Radio.component';
 import Cassette from '../Cassette/Cassette.component';
 import Disco from '../Disco/Disco.component';
+import TV from '../TV/TV.component';
 
 // libraries
 import styled from 'styled-components';
 import { motion } from "framer-motion"
 import './Player.css';
 
-const Player = ({ tracks, setDancing }) => {
+// the TV only fits beside the radio on a wide, landscape screen
+const WIDE = '(min-width: 1000px) and (orientation: landscape)';
+const useWideScreen = () => {
+  const [wide, setWide] = useState(() => window.matchMedia(WIDE).matches);
+  useEffect(() => {
+    const query = window.matchMedia(WIDE);
+    const onChange = () => setWide(query.matches);
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
+  return wide;
+};
+
+const Player = ({ tracks, channels, setDancing }) => {
+  const wideScreen = useWideScreen();
   const constraintsRef = useRef(null);
   // the tape as it was when it was loaded
   const [loaded, setLoaded] = useState(null);
@@ -49,6 +64,7 @@ const Player = ({ tracks, setDancing }) => {
     <Container>
       <motion.div className="drag-area" ref={constraintsRef}>
         <Bottom $activeTrack={activeTrack}>
+          {wideScreen && <TV channels={channels} />}
           <Radio activeTrack={activeTrack} nothingOnAir={nothingOnAir} offAir={offAir} setActiveTrack={setLoaded} onPlayingChange={setSpinTheBall} />
         </Bottom>
         <Top>

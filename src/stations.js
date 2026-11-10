@@ -15,8 +15,11 @@ const mountOf = (listenurl) => {
 // A station is identified by its mount, which stays the same while other stations come and go.
 const toTrack = (s) => {
   const mount = mountOf(s.listenurl);
+  const type = s.server_type || s['content-type'] || '';
   return {
     id: mount,
+    // video streams go to the TV, everything else is a tape for the radio
+    kind: /^video\//i.test(type) || /\.webm$/i.test(mount) ? 'video' : 'audio',
     url: ICECAST + mount,
     genre: s.genre || null,
     title: s.title || s['display-title'] || null,
@@ -32,6 +35,7 @@ const toTrack = (s) => {
 // the jungle tape only shows when its station is configured
 export const defaultTracks = () => (JUNGLE ? [{
   id: 'jungle',
+  kind: 'audio',
   url: JUNGLE,
   genre: null,
   title: null,

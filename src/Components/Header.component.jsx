@@ -6,9 +6,10 @@ import { MdMoreHoriz } from 'react-icons/md'
 import portalGreen from '../Images/portal-green.png';
 import portalWalnut from '../Images/portal-walnut.png';
 import portalShore from '../Images/portal-shore.png';
+import portalJelly from '../Images/portal-jelly.png';
 
-// the archive has no classic or jelly theme of its own; those show it in its usual green
-const PORTALS = { walnut: portalWalnut, shore: portalShore };
+// the archive has no classic theme of its own; classic shows it in its usual green
+const PORTALS = { walnut: portalWalnut, shore: portalShore, jelly: portalJelly };
 
 const Header = ({ theme }) => {
   return (

@@ -1,0 +1,263 @@
+/* The walnut theme: everything past its colors (those are in index.css).
+   A warm, relaxed, vintage room: an ivory wall, wooden cabinets with a visible grain,
+   woven speaker cloth, brass knobs, ivory piano-key buttons, and a wooden shelf along the
+   bottom that the radio and the TV stand on. Every rule sits inside the walnut selector,
+   so none of it touches the other themes. */
+
+:root[data-theme="walnut"] {
+  --walnut-serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+  /* wood grain: thin dark and light lines running along the board */
+  --walnut-grain:
+    repeating-linear-gradient(178deg, rgb(48 38 37 / 0) 0 .45rem, rgb(48 38 37 / .16) .45rem .52rem, rgb(48 38 37 / 0) .52rem 1.15rem, rgb(229 223 210 / .1) 1.15rem 1.2rem, rgb(48 38 37 / 0) 1.2rem 1.7rem),
+    repeating-linear-gradient(183deg, rgb(48 38 37 / 0) 0 1.9rem, rgb(48 38 37 / .1) 1.9rem 2.05rem),
+    linear-gradient(rgb(229 223 210 / .14), rgb(48 38 37 / .14));
+  /* woven cloth */
+  --walnut-weave:
+    repeating-linear-gradient(0deg, rgb(89 66 55 / .28) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgb(89 66 55 / .28) 0 1px, transparent 1px 4px);
+  --walnut-brass: radial-gradient(circle at 35% 30%, #E5DFD2 0, #D9C797 18%, #C39A60 55%, #987044 100%);
+
+  /* ---------- the room ---------- */
+
+  /* a wall with a little light falling on it */
+  .sbc-app {
+    background: radial-gradient(ellipse at 30% 20%, #EFEADF, #E5DFD2 55%, #DBD3C2);
+  }
+
+  /* the lamp turned down when a tape is in */
+  .sbc-player:has(.sbc-radio[data-loaded="yes"]) .sbc-dim {
+    background-color: rgb(48 38 37 / .45);
+  }
+
+  /* the footer is the shelf the radio and the TV stand on */
+  .sbc-footer {
+    height: 1.5rem;
+    font-family: var(--walnut-serif);
+    font-size: .8rem;
+    letter-spacing: .03em;
+    background: var(--walnut-grain), #987044;
+    border-top: .15rem solid #C39A60;
+    box-shadow: 0 -.25rem .5rem rgb(48 38 37 / .25);
+  }
+
+  /* ---------- the name ---------- */
+
+  .sbc-banner {
+    box-sizing: border-box;
+    padding: .35rem 0 .25rem .5rem;
+    border-bottom: .2rem double #987044;
+  }
+  @media (min-width: 800px) {
+    .sbc-banner { padding-right: 21%; }
+  }
+  /* on phones the badge hangs under the name, not on its last letters */
+  @media only screen and (orientation: portrait) {
+    .sbc-badge { top: 3.2rem; }
+  }
+
+  .sbc-letter {
+    font-family: var(--walnut-serif);
+    font-weight: 400;
+    font-size: min(1.8rem, 6vw);
+    line-height: 1.2;
+  }
+
+  .sbc-banner-dots {
+    color: #C39A60 !important;
+  }
+
+  .sbc-badge {
+    border-radius: .3rem;
+    border-width: .12rem;
+    box-shadow: inset 0 0 0 .2rem #594237, inset 0 0 0 .27rem #C39A60, 0 .3rem .7rem rgb(48 38 37 / .3);
+    text-decoration: none;
+  }
+  .sbc-badge-text {
+    font-family: var(--walnut-serif);
+    font-size: 1.5rem;
+    letter-spacing: .12em;
+  }
+  @media (min-width: 800px) {
+    .sbc-badge-text { font-size: 2.3rem; }
+  }
+
+  /* ---------- tapes ---------- */
+
+  .sbc-tape {
+    border: .12rem solid var(--tape-edge);
+    border-radius: .4rem;
+    background: linear-gradient(rgb(229 223 210 / .14), rgb(48 38 37 / .12)), var(--tape);
+    box-shadow: inset 0 0 0 .22rem #987044, inset 0 0 0 .28rem rgb(48 38 37 / .35), 0 .35rem .8rem rgb(48 38 37 / .3);
+    padding-top: .55rem;
+    padding-bottom: .5rem;
+  }
+
+  /* a paper label with ruled lines to write on */
+  .sbc-tape-label {
+    width: 84%;
+    border: 0;
+    border-radius: .15rem;
+    background:
+      linear-gradient(#594237 0 .3rem, transparent .3rem),
+      repeating-linear-gradient(transparent 0 .82rem, rgb(152 112 68 / .55) .82rem .88rem),
+      var(--tape-label);
+    padding-top: .55rem;
+    box-shadow: 0 .05rem .12rem rgb(48 38 37 / .45);
+  }
+
+  /* the window onto the reels */
+  .sbc-tape-holes {
+    width: 9rem;
+    margin: .45rem 0;
+    padding: .7rem 1.2rem;
+    border-radius: .3rem;
+    background: #302625;
+    box-shadow: inset 0 .15rem .35rem rgb(0 0 0 / .6), 0 0 0 .08rem #C39A60;
+  }
+  .sbc-tape-hole {
+    background: #594237;
+  }
+
+  .sbc-tape-genre {
+    border: 0;
+    border-radius: .15rem;
+    align-items: center;
+    color: var(--tape-ink);
+    box-shadow: 0 .05rem .12rem rgb(48 38 37 / .45);
+  }
+
+  .sbc-tape-loaded {
+    border-bottom: 0;
+    border-radius: .4rem .4rem 0 0;
+  }
+
+  /* ---------- the radio: a wooden cabinet ---------- */
+
+  .sbc-radio {
+    border: .3rem solid var(--radio-edge);
+    border-radius: 1.2rem;
+    background: var(--walnut-grain), var(--radio);
+    box-shadow: inset 0 0 0 .08rem rgb(195 154 96 / .7), 0 .5rem 1.1rem rgb(48 38 37 / .35);
+  }
+
+  .sbc-radio-buttons {
+    gap: .2rem;
+    margin: .5rem 0 .45rem;
+  }
+
+  /* ivory piano keys */
+  .sbc-btn {
+    transform: none;
+    height: 2.3rem;
+    border: .08rem solid #594237;
+    border-bottom: .35rem solid #D9C797;
+    border-radius: .15rem .15rem .4rem .4rem;
+    background-image: linear-gradient(rgb(255 255 255 / .35), rgb(255 255 255 / 0) 55%);
+    box-shadow: 0 .2rem .3rem rgb(48 38 37 / .4);
+    cursor: pointer;
+  }
+  .sbc-play, .sbc-pause { width: 3.6rem; }
+  .sbc-eject { width: 5.6rem; }
+
+  /* the speaker panel: cloth in a wooden frame */
+  .sbc-deck {
+    border: .4rem solid #594237;
+    border-radius: .9rem;
+    background: var(--walnut-weave), #C39A60;
+    box-shadow: inset 0 .25rem .6rem rgb(48 38 37 / .45);
+  }
+
+  .sbc-deck-inset {
+    border-radius: .3rem;
+    box-shadow: 0 0 0 .1rem #987044, 0 .15rem .4rem rgb(48 38 37 / .4);
+  }
+
+  /* a lit tuning dial, with the scale along the bottom */
+  .sbc-screen {
+    margin-top: .4rem;
+    margin-bottom: .6rem;
+    height: 3.6rem;
+    border: .12rem solid #594237;
+    border-radius: .25rem;
+    font-family: var(--walnut-serif);
+    font-size: .8rem;
+    line-height: 1.2;
+    text-align: center;
+    padding-bottom: .5rem;
+    box-sizing: border-box;
+    background:
+      repeating-linear-gradient(90deg, #594237 0 1px, transparent 1px .5rem) 0 100% / 100% .35rem no-repeat,
+      repeating-linear-gradient(90deg, #594237 0 1px, transparent 1px 2.5rem) 0 100% / 100% .6rem no-repeat,
+      radial-gradient(ellipse at 50% 40%, #EFE6C4, #D9C797 70%, #C9B27E);
+    box-shadow: inset 0 0 .5rem rgb(152 112 68 / .7);
+  }
+
+  .sbc-slot {
+    border: .25rem solid #594237;
+    border-radius: .3rem;
+    box-shadow: inset 0 .25rem .5rem rgb(0 0 0 / .55);
+  }
+
+  /* ---------- the TV: a wooden console set ---------- */
+
+  .sbc-tv-cabinet {
+    border: .3rem solid #302625;
+    border-radius: 1rem;
+    background: var(--walnut-grain), var(--tv);
+    box-shadow: inset 0 0 0 .08rem rgb(195 154 96 / .6), 0 .5rem 1.1rem rgb(48 38 37 / .35);
+  }
+
+  .sbc-tv-tube {
+    border: .25rem solid #302625;
+    border-radius: .9rem;
+    box-shadow: 0 0 0 .08rem #C39A60;
+  }
+
+  /* brass rods */
+  .sbc-tv-antenna {
+    background: linear-gradient(90deg, #987044, #D9C797, #987044);
+  }
+
+  .sbc-tv-label {
+    font-family: var(--walnut-serif);
+    font-size: .55rem;
+    letter-spacing: .1em;
+    margin: .15rem 0 .5rem;
+  }
+
+  /* a brass knob */
+  .sbc-tv-knob {
+    border: .12rem solid #594237;
+    background: var(--walnut-brass);
+    box-shadow: 0 .2rem .35rem rgb(0 0 0 / .45);
+  }
+  .sbc-tv-knob-mark {
+    background: #302625;
+  }
+  .sbc-tv-switch,
+  .sbc-tv-power {
+    border: .12rem solid #302625;
+    box-shadow: inset 0 -.2rem .25rem rgb(48 38 37 / .25), 0 .15rem .3rem rgb(0 0 0 / .4);
+  }
+  .sbc-tv-power[aria-pressed="true"] {
+    box-shadow: 0 0 .6rem .1rem rgb(217 199 151 / .8);
+  }
+
+  /* speaker cloth where the slats were */
+  .sbc-tv-grille {
+    border-radius: .2rem;
+    background: var(--walnut-weave), #C39A60;
+    box-shadow: inset 0 .15rem .35rem rgb(48 38 37 / .5), 0 0 0 .1rem #302625;
+  }
+
+  /* tapered legs */
+  .sbc-tv-feet {
+    width: 15rem;
+  }
+  .sbc-tv-foot {
+    width: 1.6rem;
+    height: .8rem;
+    border-radius: 0;
+    clip-path: polygon(0 0, 100% 0, 72% 100%, 28% 100%);
+  }
+}

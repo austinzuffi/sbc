@@ -1,0 +1,240 @@
+/* The shore theme: everything past its colors (those are in index.css).
+   A beach at dusk: the sky runs from cloud blue through pale blush down to mist blue, and
+   the radio and the TV stand in the shallow water under the horizon. Everything is sea
+   glass: frosted, matte, with the corners tumbled smooth. Every rule sits inside the shore
+   selector, so none of it touches the other themes. */
+
+:root[data-theme="shore"] {
+  --shore-sans: 'Josefin Sans', 'Dosis', sans-serif;
+  /* dark text; the palette has no dark of its own, so this is the teal darkened */
+  --shore-ink: #232C2C;
+  /* what frosted glass does to the light: a pale rim, a glow inside, a soft shadow */
+  --shore-glass: inset 0 0 0 .07rem rgb(229 237 248 / .7), inset 0 0 1.2rem rgb(229 237 248 / .45), 0 .5rem 1.2rem rgb(100 125 125 / .28);
+  --shore-frost: blur(5px);
+
+  /* ---------- sky and water ---------- */
+
+  /* top to bottom: a few pale lines of surf, the water under the horizon, then the sky */
+  .sbc-app {
+    background:
+      repeating-linear-gradient(rgb(229 237 248 / .32) 0 1px, rgb(229 237 248 / 0) 1px 1.9rem) 0 100% / 100% 20% no-repeat,
+      linear-gradient(rgb(229 237 248 / .55), rgb(229 237 248 / 0) 12%) 0 100% / 100% 22% no-repeat,
+      linear-gradient(#B9C9D4, #A5B4B1) 0 100% / 100% 22% no-repeat,
+      linear-gradient(180deg, #E5EDF8 0%, #F3E3E4 55%, #B9C9D4 100%);
+  }
+
+  /* dusk when a tape is in */
+  .sbc-player:has(.sbc-radio[data-loaded="yes"]) .sbc-dim {
+    background-color: rgb(35 44 44 / .38);
+  }
+
+  .sbc-footer {
+    font-family: var(--shore-sans);
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .04em;
+    height: 1.3rem;
+    padding-top: .1rem;
+  }
+
+  /* ---------- the name ---------- */
+
+  .sbc-banner {
+    box-sizing: border-box;
+    padding: .5rem 0 .2rem .5rem;
+  }
+  @media (min-width: 800px) {
+    .sbc-banner { padding-right: 21%; }
+  }
+  /* on phones the badge hangs under the name, not on its last letters */
+  @media only screen and (orientation: portrait) {
+    .sbc-badge { top: 3.2rem; }
+  }
+
+  .sbc-letter {
+    font-family: var(--shore-sans);
+    font-weight: 300;
+    font-size: min(1.9rem, 6.2vw);
+    line-height: 1.2;
+  }
+
+  .sbc-banner-dots {
+    color: #A5B4B1 !important;
+  }
+
+  .sbc-badge {
+    border-radius: 2rem 1.4rem 2.2rem 1.6rem;
+    border-width: .07rem;
+    border-color: rgb(229 237 248 / .8);
+    box-shadow: var(--shore-glass);
+    -webkit-backdrop-filter: var(--shore-frost);
+    backdrop-filter: var(--shore-frost);
+    text-decoration: none;
+  }
+  .sbc-badge-text {
+    font-family: var(--shore-sans);
+    font-weight: 300;
+    font-size: 1.25rem;
+    letter-spacing: .12em;
+    padding: .2rem 0 0 .12em;
+  }
+  @media (min-width: 800px) {
+    .sbc-badge-text { font-size: 2.5rem; letter-spacing: .2em; padding: .25rem 0 0 .2em; }
+  }
+
+  /* ---------- tapes: pieces of sea glass ---------- */
+
+  .sbc-tape {
+    border: .07rem solid rgb(229 237 248 / .85);
+    border-radius: 1.6rem 1.1rem 1.5rem 1.2rem;
+    box-shadow: var(--shore-glass);
+    -webkit-backdrop-filter: var(--shore-frost);
+    backdrop-filter: var(--shore-frost);
+    padding-top: .7rem;
+    padding-bottom: .6rem;
+  }
+
+  .sbc-tape-label {
+    width: 80%;
+    border: 0;
+    border-radius: .8rem .6rem .7rem .6rem;
+    box-shadow: inset 0 0 .5rem rgb(255 255 255 / .6);
+  }
+
+  .sbc-tape-holes {
+    padding: .8rem 1rem;
+  }
+  .sbc-tape-hole {
+    border-style: solid;
+    border-width: .35rem;
+    box-shadow: inset 0 .1rem .3rem rgb(35 44 44 / .35);
+  }
+
+  .sbc-tape-genre {
+    border: 0;
+    border-radius: 999px;
+    align-items: center;
+    color: var(--tape-ink);
+    box-shadow: inset 0 0 .5rem rgb(255 255 255 / .6);
+  }
+
+  .sbc-tape-loaded {
+    border-bottom: 0;
+    border-radius: 1.2rem 1rem 0 0;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 .07rem rgb(229 237 248 / .7);
+  }
+
+  /* ---------- the radio ---------- */
+
+  .sbc-radio {
+    border: .07rem solid rgb(229 237 248 / .85);
+    border-radius: 2.8rem 1.8rem 2.2rem 1.6rem;
+    box-shadow: var(--shore-glass);
+    -webkit-backdrop-filter: var(--shore-frost);
+    backdrop-filter: var(--shore-frost);
+  }
+
+  .sbc-radio-buttons {
+    gap: .45rem;
+    margin: .7rem 0 .55rem;
+  }
+
+  /* pebbles */
+  .sbc-btn {
+    transform: none;
+    height: 2.3rem;
+    border: .07rem solid rgb(229 237 248 / .85);
+    box-shadow: inset 0 0 .5rem rgb(255 255 255 / .45), 0 .2rem .4rem rgb(100 125 125 / .35);
+    cursor: pointer;
+  }
+  .sbc-play { width: 3.5rem; border-radius: 55% 45% 50% 50% / 60% 55% 45% 40%; }
+  .sbc-pause { width: 3.3rem; border-radius: 48% 52% 45% 55% / 50% 60% 40% 50%; }
+  .sbc-eject { width: 5.4rem; border-radius: 40% 60% 55% 45% / 60% 50% 50% 40%; }
+
+  .sbc-deck {
+    border: .07rem solid rgb(229 237 248 / .7);
+    border-radius: 1.8rem 1.4rem 1.6rem 1.2rem;
+    margin: 0 0 .5rem .5rem;
+    background: rgb(229 237 248 / .35);
+    box-shadow: inset 0 .2rem .6rem rgb(100 125 125 / .3);
+  }
+
+  .sbc-deck-inset {
+    border-radius: 1rem .8rem .9rem .8rem;
+    background: rgb(229 237 248 / .75);
+  }
+
+  .sbc-screen {
+    margin-top: .4rem;
+    margin-bottom: .6rem;
+    height: 3.6rem;
+    border-radius: 1rem .8rem .9rem .8rem;
+    font-family: var(--shore-sans);
+    font-weight: 600;
+    font-size: .8rem;
+    letter-spacing: .04em;
+    line-height: 1.25;
+    text-align: center;
+    box-shadow: inset 0 0 .6rem rgb(255 255 255 / .7), inset 0 0 0 .07rem rgb(185 201 212 / .9);
+  }
+
+  .sbc-slot {
+    border: 0;
+    border-radius: .9rem .9rem 0 0;
+    box-shadow: inset 0 .3rem .6rem rgb(35 44 44 / .45);
+    overflow: hidden;
+  }
+
+  /* ---------- the TV ---------- */
+
+  .sbc-tv-cabinet {
+    border: .07rem solid rgb(229 237 248 / .85);
+    border-radius: 2.4rem 1.8rem 1.6rem 2rem;
+    box-shadow: var(--shore-glass);
+    -webkit-backdrop-filter: var(--shore-frost);
+    backdrop-filter: var(--shore-frost);
+  }
+
+  .sbc-tv-tube {
+    border: .07rem solid rgb(229 237 248 / .6);
+    border-radius: 1.6rem 1.3rem 1.2rem 1.4rem;
+    box-shadow: inset 0 .2rem .6rem rgb(35 44 44 / .3);
+  }
+
+  .sbc-tv-antenna {
+    width: .15rem;
+  }
+
+  .sbc-tv-label {
+    font-family: var(--shore-sans);
+    font-weight: 600;
+    font-size: .55rem;
+    letter-spacing: .14em;
+    margin: .2rem 0 .5rem;
+  }
+
+  .sbc-tv-knob,
+  .sbc-tv-switch,
+  .sbc-tv-power {
+    border: .07rem solid rgb(229 237 248 / .85);
+    box-shadow: inset 0 0 .45rem rgb(255 255 255 / .55), 0 .2rem .4rem rgb(35 44 44 / .3);
+  }
+  .sbc-tv-knob { border-radius: 52% 48% 50% 50% / 55% 50% 50% 45%; }
+  .sbc-tv-switch { border-radius: 999px; }
+  .sbc-tv-power[aria-pressed="true"] {
+    box-shadow: inset 0 0 .45rem rgb(255 255 255 / .55), 0 0 .6rem .1rem rgb(243 227 228 / .9);
+  }
+
+  /* holes, like a shell */
+  .sbc-tv-grille {
+    background: radial-gradient(circle, var(--tv-dark) 0 .12rem, transparent .15rem) 50% 0 / .53rem .53rem;
+  }
+
+  /* two stones */
+  .sbc-tv-foot {
+    height: .8rem;
+    border-radius: 0 0 60% 50% / 0 0 100% 100%;
+  }
+}

@@ -3,7 +3,7 @@
    in App.jsx and give it a crayon in Crayons.component.jsx.
    A theme can go past colors: every part of the page has an sbc- class name (sbc-radio,
    sbc-tape, sbc-tv-knob ...), so a theme can have its own stylesheet in src/themes that
-   reshapes any of them. themes/jelly.css is one; import a new one in main.jsx. */
+   reshapes any of them, as walnut, shore and jelly do; import a new one in main.jsx. */
 :root {
   --page: black;
   --page-image: none;
@@ -56,83 +56,88 @@
 }
 
 /* walnut: warm ivory #E5DFD2, soft cream #D9C797, muted olive #B1AC7A, honey gold #C39A60,
-   caramel brown #987044, dark walnut #594237, espresso #302625 */
+   caramel brown #987044, dark walnut #594237, espresso #302625. Ivory is the canvas,
+   espresso the text, walnut the buttons and headings; gold and olive are only for fills and
+   trim. The wood grain, cloth and shapes are in themes/walnut.css. */
 :root[data-theme="walnut"] {
-  --page: #302625;
-  --footer-bg: #302625;
-  --footer-fg: #B1AC7A;
-  --footer-hover: #E5DFD2;
-  --banner: #E5DFD2;
+  --page: #E5DFD2;
+  --footer-bg: #987044;
+  --footer-fg: #E5DFD2;
+  --footer-hover: #302625;
+  --banner: transparent;
   --banner-ink: #302625;
   --badge: #594237;
-  --badge-ink: #D9C797;
+  --badge-ink: #E5DFD2;
 
-  --tape: #987044;
-  --tape-edge: #E5DFD2;
-  --tape-label: #D9C797;
+  --tape: #594237;
+  --tape-edge: #302625;
+  --tape-label: #E5DFD2;
   --tape-ink: #302625;
   --tape-hole: #302625;
   --tape-reel: #E5DFD2;
 
-  --radio: #C39A60;
-  --radio-edge: #D9C797;
+  --radio: #987044;
+  --radio-edge: #594237;
   --radio-inset: #E5DFD2;
-  --screen: #B1AC7A;
+  --screen: #D9C797;
   --screen-ink: #302625;
   --slot: #302625;
-  --slot-ink: #E5DFD2;
-  --slider: #594237;
+  --slot-ink: #D9C797;
+  --slider: #302625;
 
   --btn: #E5DFD2;
   --btn-ink: #302625;
   --btn-edge: #D9C797;
   --play: #B1AC7A;
   --play-ink: #302625;
-  --pause: #987044;
-  --pause-ink: #E5DFD2;
+  --pause: #C39A60;
+  --pause-ink: #302625;
   --eject: #594237;
   --eject-ink: #E5DFD2;
 
   --tv: #594237;
-  --tv-edge: #987044;
+  --tv-edge: #302625;
   --tv-inset: #D9C797;
   --tv-dark: #302625;
-  --tv-foot: #987044;
+  --tv-foot: #302625;
   --tv-label: #E5DFD2;
-  --antenna: #E5DFD2;
-  --knob: #D9C797;
-  --knob-edge: #C39A60;
+  --antenna: #C39A60;
+  --knob: #C39A60;
+  --knob-edge: #594237;
   --osd: #E5DFD2;
   --switch-on: #B1AC7A;
-  --power-on: #C39A60;
+  --power-on: #D9C797;
 }
 
 /* shore: cloud blue #E5EDF8, pale blush #F3E3E4, mist blue #B9C9D4, sea-glass gray #A5B4B1,
-   muted teal #647D7D. The palette has no dark color, so #232C2C is the teal darkened. */
+   muted teal #647D7D. The light sky colors are the large surfaces and teal is the brand
+   color. The palette has no text color, so #232C2C (the teal darkened) is used for text
+   and small dark details only. The sky, the water and the sea-glass shapes are in
+   themes/shore.css. */
 :root[data-theme="shore"] {
   --page: #E5EDF8;
-  --page-image: linear-gradient(#E5EDF8, #F3E3E4);
-  --footer-bg: #232C2C;
-  --footer-fg: #A5B4B1;
-  --footer-hover: #E5EDF8;
-  --banner: #647D7D;
-  --banner-ink: #E5EDF8;
-  --badge: #232C2C;
-  --badge-ink: #F3E3E4;
+  --page-image: linear-gradient(180deg, #E5EDF8 0%, #F3E3E4 55%, #B9C9D4 100%);
+  --footer-bg: rgb(229 237 248 / .35);
+  --footer-fg: #232C2C;
+  --footer-hover: #647D7D;
+  --banner: transparent;
+  --banner-ink: #647D7D;
+  --badge: rgb(100 125 125 / .88);
+  --badge-ink: #E5EDF8;
 
-  --tape: #B9C9D4;
-  --tape-edge: #647D7D;
+  --tape: rgb(185 201 212 / .72);
+  --tape-edge: #E5EDF8;
   --tape-label: #F3E3E4;
   --tape-ink: #232C2C;
-  --tape-hole: #232C2C;
-  --tape-reel: #E5EDF8;
+  --tape-hole: rgb(229 237 248 / .7);
+  --tape-reel: #647D7D;
 
-  --radio: #A5B4B1;
-  --radio-edge: #B9C9D4;
+  --radio: rgb(165 180 177 / .74);
+  --radio-edge: #E5EDF8;
   --radio-inset: #E5EDF8;
-  --screen: #232C2C;
-  --screen-ink: #F3E3E4;
-  --slot: #232C2C;
+  --screen: #F3E3E4;
+  --screen-ink: #232C2C;
+  --slot: #647D7D;
   --slot-ink: #E5EDF8;
   --slider: #647D7D;
 
@@ -142,81 +147,78 @@
   --play: #647D7D;
   --play-ink: #F3E3E4;
   --pause: #F3E3E4;
-  --pause-ink: #647D7D;
-  --eject: #232C2C;
-  --eject-ink: #E5EDF8;
+  --pause-ink: #232C2C;
+  --eject: #B9C9D4;
+  --eject-ink: #232C2C;
 
-  --tv: #647D7D;
-  --tv-edge: #A5B4B1;
-  --tv-inset: #E5EDF8;
-  --tv-dark: #232C2C;
-  --tv-foot: #232C2C;
+  --tv: rgb(100 125 125 / .82);
+  --tv-edge: #E5EDF8;
+  --tv-inset: rgb(229 237 248 / .55);
+  --tv-dark: rgb(35 44 44 / .55);
+  --tv-foot: #647D7D;
   --tv-label: #E5EDF8;
   --antenna: #647D7D;
   --knob: #F3E3E4;
-  --knob-edge: #B9C9D4;
+  --knob-edge: #E5EDF8;
   --osd: #F3E3E4;
-  --switch-on: #232C2C;
-  --power-on: #232C2C;
+  --switch-on: #B9C9D4;
+  --power-on: #F3E3E4;
 }
 
-/* jelly: see-through plastic, like jelly sandals and clear-shell electronics. Grape radio,
-   aqua TV, pink tapes, candy buttons. Most colors are partly transparent, so whatever is
-   behind a thing shows through it. These are only the colors: the shapes, the shine and the
-   insides you can see through the shells are in themes/jelly.css. */
+/* jelly: clear, colorless plastic, like the see-through TVs and radios. The shells have
+   almost no color of their own, so whatever is behind a thing shows through it, and the
+   color comes from the insides: black buttons, a tan circuit board, brown tape. These are
+   only the colors: the shapes, the shine and the insides you can see through the shells
+   are in themes/jelly.css. */
 :root[data-theme="jelly"] {
-  --page: #F1E9FB;
-  --page-image:
-    radial-gradient(circle at 20% 30%, rgb(255 61 154 / .5) 0 1.5px, transparent 2px),
-    radial-gradient(circle at 70% 60%, rgb(40 190 225 / .55) 0 1.5px, transparent 2px),
-    radial-gradient(circle at 40% 80%, rgb(255 190 30 / .65) 0 1px, transparent 1.5px),
-    linear-gradient(160deg, #F3E9FF, #E1F8F5 55%, #FFE8F2);
-  --footer-bg: rgb(255 255 255 / .6);
-  --footer-fg: #6F5C96;
-  --footer-hover: #E0177F;
+  --page: #F3F4F2;
+  --page-image: radial-gradient(ellipse at 50% 35%, #FFFFFF, #ECEEEC 75%, #E2E5E3);
+  --footer-bg: rgb(255 255 255 / .7);
+  --footer-fg: #6B7378;
+  --footer-hover: #111315;
   --banner: transparent;
-  --banner-ink: #5B2BBF;
-  --badge: rgb(255 45 150 / .7);
-  --badge-ink: #FFFFFF;
+  --banner-ink: #2A2E31;
+  --badge: rgb(214 224 230 / .32);
+  --badge-ink: #2A2E31;
 
-  --tape: rgb(255 70 160 / .46);
-  --tape-edge: rgb(255 255 255 / .8);
-  --tape-label: #FFFDF6;
-  --tape-ink: #4A1D6B;
+  --tape: rgb(214 224 230 / .32);
+  --tape-edge: rgb(120 135 145 / .6);
+  --tape-label: #FBFAF5;
+  --tape-ink: #22262A;
   --tape-hole: rgb(255 255 255 / .55);
-  --tape-reel: #FFFFFF;
+  --tape-reel: #F2F2EE;
 
-  --radio: rgb(140 80 255 / .5);
-  --radio-edge: rgb(255 255 255 / .65);
-  --radio-inset: rgb(24 130 84 / .85);
+  --radio: rgb(214 224 230 / .3);
+  --radio-edge: rgb(120 135 145 / .6);
+  --radio-inset: rgb(184 146 92 / .92);
   --screen: #A9B49A;
   --screen-ink: #1F2A1A;
-  --slot: rgb(35 12 70 / .78);
-  --slot-ink: rgb(255 255 255 / .85);
-  --slider: #FF3D9A;
+  --slot: rgb(20 22 24 / .84);
+  --slot-ink: rgb(255 255 255 / .7);
+  --slider: #2A2E31;
 
-  --btn: rgb(255 255 255 / .6);
-  --btn-ink: #3B2A66;
-  --btn-edge: rgb(255 255 255 / .85);
-  --play: rgb(120 230 90 / .8);
-  --play-ink: #0F5A1C;
-  --pause: rgb(255 200 40 / .85);
-  --pause-ink: #7A4A00;
-  --eject: rgb(60 200 230 / .8);
-  --eject-ink: #06495C;
+  --btn: #1D1F21;
+  --btn-ink: #E8EAEA;
+  --btn-edge: #C4CACE;
+  --play: #1D1F21;
+  --play-ink: #6DF08A;
+  --pause: #1D1F21;
+  --pause-ink: #FFC24A;
+  --eject: #1D1F21;
+  --eject-ink: #F2F2F2;
 
-  --tv: rgb(30 205 220 / .46);
-  --tv-edge: rgb(255 255 255 / .65);
-  --tv-inset: rgb(0 90 110 / .3);
-  --tv-dark: rgb(0 80 100 / .6);
-  --tv-foot: rgb(30 205 220 / .6);
-  --tv-label: #06495C;
+  --tv: rgb(214 224 230 / .3);
+  --tv-edge: rgb(120 135 145 / .6);
+  --tv-inset: rgb(120 135 140 / .22);
+  --tv-dark: rgb(50 60 66 / .6);
+  --tv-foot: rgb(214 224 230 / .55);
+  --tv-label: #3A4045;
   --antenna: linear-gradient(90deg, #9AA3AD, #FFFFFF, #9AA3AD);
-  --knob: rgb(255 222 50 / .8);
-  --knob-edge: rgb(255 255 255 / .75);
-  --osd: #7CFFB2;
-  --switch-on: rgb(120 230 90 / .85);
-  --power-on: rgb(255 61 154 / .9);
+  --knob: #1D1F21;
+  --knob-edge: #C4CACE;
+  --osd: #B8FFD0;
+  --switch-on: #3FCB68;
+  --power-on: #E5482F;
 }
 
 body {

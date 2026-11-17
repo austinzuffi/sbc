@@ -5,9 +5,9 @@ import styled from 'styled-components';
 // Only on desktop; phones get the theme button in the footer.
 const CRAYONS = {
   classic: { color: '#E9573F', tilt: -7 },
-  walnut: { color: '#C39A60', tilt: 3 },
+  walnut: { color: '#987044', tilt: 3 },
   shore: { color: '#647D7D', tilt: 9 },
-  jelly: { color: '#FF5FB0', tilt: -4 }
+  jelly: { color: '#D3DBDF', tilt: -4 }
 };
 
 const Crayons = ({ themes, theme, setTheme }) => (

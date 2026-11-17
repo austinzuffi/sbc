@@ -33,7 +33,7 @@ const Crayons = ({ themes, theme, setTheme }) => (
 
 const Box = styled.div`
   position: absolute;
-  top: 7.6rem;
+  top: 8.6rem;
   right: 5%;
   z-index: 11;
   display: flex;

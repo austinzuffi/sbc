@@ -111,7 +111,7 @@ const App = () => {
 
   return (
     <Body id="main" className="sbc-app" $height={height} $img={activeBg} $header={headerImg}>
-      <Header />
+      <Header theme={theme} />
       <Crayons themes={THEMES} theme={theme} setTheme={setTheme} />
       <Player
         tracks={tracks && tracks.filter((t) => t.kind !== 'video')}

@@ -90,19 +90,8 @@
     letter-spacing: .08em;
     text-shadow: 0 .08rem 0 rgb(255 255 255 / .8);
   }
-  /* "radio" */
-  .sbc-badge::after {
-    content: 'ラジオ';
-    position: absolute;
-    right: 1rem;
-    bottom: .1rem;
-    font-family: var(--jelly-dots);
-    font-size: .6rem;
-    color: var(--jelly-print);
-  }
   @media (min-width: 800px) {
     .sbc-badge-text { font-size: 2.3rem; }
-    .sbc-badge::after { font-size: .75rem; right: 1.6rem; bottom: .15rem; }
   }
 
   /* ---------- tapes: clear shells with the tape showing ---------- */

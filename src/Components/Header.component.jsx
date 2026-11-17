@@ -4,23 +4,23 @@ import { MdMoreHoriz } from 'react-icons/md'
 
 const Header = () => {
   return (
-    <Banner>
-      <Letter>S</Letter>
-      <Letter>O</Letter>
-      <Letter>F</Letter>
-      <Letter>T</Letter>
-      <MdMoreHoriz color="white" size=".2em" />
-      <Letter>B</Letter>
-      <Letter>O</Letter>
-      <Letter>Y</Letter>
-      <Letter>S</Letter>
-      <MdMoreHoriz color="white" size=".2em" />
-      <Letter>C</Letter>
-      <Letter>L</Letter>
-      <Letter>U</Letter>
-      <Letter>B</Letter>
-      <RadioBox href="https://pioneer.softboys.club" target="_blank" rel="noopener noreferrer">
-        <Radio>RADIO</Radio>
+    <Banner className="sbc-banner">
+      <Letter className="sbc-letter">S</Letter>
+      <Letter className="sbc-letter">O</Letter>
+      <Letter className="sbc-letter">F</Letter>
+      <Letter className="sbc-letter">T</Letter>
+      <MdMoreHoriz className="sbc-banner-dots" color="white" size=".2em" />
+      <Letter className="sbc-letter">B</Letter>
+      <Letter className="sbc-letter">O</Letter>
+      <Letter className="sbc-letter">Y</Letter>
+      <Letter className="sbc-letter">S</Letter>
+      <MdMoreHoriz className="sbc-banner-dots" color="white" size=".2em" />
+      <Letter className="sbc-letter">C</Letter>
+      <Letter className="sbc-letter">L</Letter>
+      <Letter className="sbc-letter">U</Letter>
+      <Letter className="sbc-letter">B</Letter>
+      <RadioBox className="sbc-badge" href="https://pioneer.softboys.club" target="_blank" rel="noopener noreferrer">
+        <Radio className="sbc-badge-text">RADIO</Radio>
       </RadioBox>
     </Banner>
   )
@@ -41,7 +41,6 @@ const Letter = styled.div`
   color: var(--banner-ink);
   font-size: 1.7rem;
   font-weight: 800;
-  background-color: var(--banner);
 `;
 
 const RadioBox = styled.a`

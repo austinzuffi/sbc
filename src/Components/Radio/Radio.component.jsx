@@ -177,28 +177,29 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
   const EjectButton = activeTrack ? EjectActive : EjectInactive;
 
   return (
-    <THEMEBODYGOTH id="radio-body">
-      <RadioButtons id="radio-buttons">
+    <THEMEBODYGOTH id="radio-body" className="sbc-radio" data-phase={phase} data-loaded={activeTrack ? 'yes' : 'no'}>
+      <RadioButtons id="radio-buttons" className="sbc-radio-buttons">
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <PlayButton type="button" aria-label="Play" onClick={play}><GiPlayButton size='2em'/></PlayButton>
+          <PlayButton className="sbc-btn sbc-play" type="button" aria-label="Play" onClick={play}><GiPlayButton size='2em'/></PlayButton>
         </motion.div>
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <PauseButton type="button" aria-label="Pause" onClick={stop}><GiPauseButton size='2em' /></PauseButton>
+          <PauseButton className="sbc-btn sbc-pause" type="button" aria-label="Pause" onClick={stop}><GiPauseButton size='2em' /></PauseButton>
         </motion.div>
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <EjectButton type="button" aria-label="Eject the tape" onClick={() => { stop(); setActiveTrack(null); }}>
+          <EjectButton className="sbc-btn sbc-eject" type="button" aria-label="Eject the tape" onClick={() => { stop(); setActiveTrack(null); }}>
             <MdEject size='2em' />
           </EjectButton>
         </motion.div>
       </RadioButtons>
       <Volume
+        className="sbc-volume"
         type="range" min="0" max="1" step="0.05" value={volume} aria-label="Volume"
         onChange={(e) => setVolume(parseFloat(e.target.value))}
       />
-      <THEMERADIOMAINGOTH id="radio-insert">
-        <THEMERADIOINSERTGOTH id="insert-here">
-          <THEMESCREENGOTH role="status">{screen}</THEMESCREENGOTH>
-          {activeTrack ? <Cassette track={activeTrack} reduced={true} /> : <THEMEINSERTGOTH>------------------------------------</THEMEINSERTGOTH>}
+      <THEMERADIOMAINGOTH id="radio-insert" className="sbc-deck">
+        <THEMERADIOINSERTGOTH id="insert-here" className="sbc-deck-inset">
+          <THEMESCREENGOTH className="sbc-screen" role="status">{screen}</THEMESCREENGOTH>
+          {activeTrack ? <Cassette track={activeTrack} reduced={true} /> : <THEMEINSERTGOTH className="sbc-slot">------------------------------------</THEMEINSERTGOTH>}
         </THEMERADIOINSERTGOTH>
       </THEMERADIOMAINGOTH>
       <audio ref={audioRef} preload="none" />

@@ -73,12 +73,12 @@ const TV = ({ channels }) => {
   else if (power && !picture) message = `TUNING CH ${number}`;
 
   return (
-    <Set>
-      <Antenna $tilt={-28} />
-      <Antenna $tilt={24} />
-      <Cabinet>
-        <Tube>
-          <Glass $on={power} onDoubleClick={toggleFullScreen} title={picture ? "Double-click for full screen" : undefined}>
+    <Set className="sbc-tv" data-power={power ? 'on' : 'off'}>
+      <Antenna className="sbc-tv-antenna" $tilt={-28} />
+      <Antenna className="sbc-tv-antenna" $tilt={24} />
+      <Cabinet className="sbc-tv-cabinet">
+        <Tube className="sbc-tv-tube">
+          <Glass className="sbc-tv-glass" $on={power} onDoubleClick={toggleFullScreen} title={picture ? "Double-click for full screen" : undefined}>
             {power && !picture && <Static />}
             <Picture ref={videoRef} muted={!sound} playsInline $show={picture} />
             {power && channel && picture && <Osd>{`CH ${number} ${channel.station || ''}`}</Osd>}
@@ -86,19 +86,19 @@ const TV = ({ channels }) => {
             <Glare />
           </Glass>
         </Tube>
-        <Panel>
-          <Knob type="button" aria-label="Next channel" title="Next channel" onClick={nextChannel} $turn={clicks * 40}>
-            <KnobMark />
+        <Panel className="sbc-tv-panel">
+          <Knob className="sbc-tv-knob" type="button" aria-label="Next channel" title="Next channel" onClick={nextChannel} $turn={clicks * 40}>
+            <KnobMark className="sbc-tv-knob-mark" />
           </Knob>
-          <Label>CH</Label>
-          <Switch type="button" aria-label={sound ? 'Turn the TV sound off' : 'Turn the TV sound on'} aria-pressed={sound} $on={sound} onClick={() => setSound(!sound)} />
-          <Label>SOUND</Label>
-          <Grille />
-          <Power type="button" aria-label={power ? 'Turn the TV off' : 'Turn the TV on'} aria-pressed={power} $on={power} onClick={() => setPower(!power)} />
-          <Label>POWER</Label>
+          <Label className="sbc-tv-label">CH</Label>
+          <Switch className="sbc-tv-switch" type="button" aria-label={sound ? 'Turn the TV sound off' : 'Turn the TV sound on'} aria-pressed={sound} $on={sound} onClick={() => setSound(!sound)} />
+          <Label className="sbc-tv-label">SOUND</Label>
+          <Grille className="sbc-tv-grille" />
+          <Power className="sbc-tv-power" type="button" aria-label={power ? 'Turn the TV off' : 'Turn the TV on'} aria-pressed={power} $on={power} onClick={() => setPower(!power)} />
+          <Label className="sbc-tv-label">POWER</Label>
         </Panel>
       </Cabinet>
-      <Feet><Foot /><Foot /></Feet>
+      <Feet className="sbc-tv-feet"><Foot className="sbc-tv-foot" /><Foot className="sbc-tv-foot" /></Feet>
     </Set>
   );
 };

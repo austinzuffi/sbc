@@ -13,8 +13,9 @@ import { AiFillGithub } from 'react-icons/ai';
 import headerImg from './Images/text.png';
 import { fetchStations, defaultTracks } from './stations';
 
-// color themes; the colors themselves are in index.css
-const THEMES = ['classic', 'walnut', 'shore'];
+// Themes. The colors are in index.css. A theme that changes more than colors also has a
+// stylesheet in src/themes, which restyles the parts of the page by their sbc- class names.
+const THEMES = ['classic', 'walnut', 'shore', 'jelly'];
 const savedTheme = () => {
   try {
     const t = localStorage.getItem('sbc.theme');
@@ -109,7 +110,7 @@ const App = () => {
   }, [dancing, gif, poster]);
 
   return (
-    <Body id="main" $height={height} $img={activeBg} $header={headerImg}>
+    <Body id="main" className="sbc-app" $height={height} $img={activeBg} $header={headerImg}>
       <Header />
       <Crayons themes={THEMES} theme={theme} setTheme={setTheme} />
       <Player
@@ -117,7 +118,7 @@ const App = () => {
         channels={tracks ? tracks.filter((t) => t.kind === 'video') : []}
         setDancing={setDancing}
       />
-      <Footer>
+      <Footer className="sbc-footer">
         <FooterLink href="https://github.com/austinzuffi/sbc" target="_blank" rel="noopener noreferrer">
           <Wide>Wanna see how it works?</Wide>
           <AiFillGithub size='1.3em'/>
@@ -125,7 +126,7 @@ const App = () => {
         <FooterLink href="https://github.com/joelkperkins/Soft-Boys-Club-Radio" target="_blank" rel="noopener noreferrer">
           with &lt;3 Warlock and Bird
         </FooterLink>
-        <ThemeButton type="button" title="Change the colors" onClick={() => setTheme(THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length])}>
+        <ThemeButton className="sbc-theme-button" type="button" title="Change the colors" onClick={() => setTheme(THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length])}>
           theme: {theme}
         </ThemeButton>
         <Wide>v0.2.1</Wide>

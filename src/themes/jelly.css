@@ -1,0 +1,404 @@
+/* The jelly theme: everything past its colors (those are in index.css).
+   See-through plastic you can look into: a circuit board behind the tape deck, batteries in
+   the bottom of the radio, tape wound on the reels. Every rule sits inside the jelly
+   selector, so none of it touches the other themes. */
+
+@keyframes jelly-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes jelly-blink {
+  50% { opacity: .25; }
+}
+
+:root[data-theme="jelly"] {
+  --jelly-round: 'M PLUS Rounded 1c', 'Dosis', sans-serif;
+  --jelly-dots: 'DotGothic16', 'Press Start 2P', monospace;
+  --jelly-shine: linear-gradient(115deg, rgb(255 255 255 / .55) 0%, rgb(255 255 255 / 0) 26%, rgb(255 255 255 / 0) 64%, rgb(255 255 255 / .22) 100%);
+  --jelly-screw: #F4F4FA 0 .11rem, rgb(60 50 90 / .55) .13rem .23rem, transparent .26rem;
+
+  /* ---------- the page ---------- */
+
+  .sbc-app {
+    background-size: 67px 67px, 101px 101px, 43px 43px, auto;
+  }
+
+  /* a softer, grape-colored dimming when a tape is in */
+  .sbc-player:has(.sbc-radio[data-loaded="yes"]) .sbc-dim {
+    background-color: rgb(70 30 140 / .3);
+  }
+
+  /* ---------- SOFT BOYS CLUB, as letter beads ---------- */
+
+  .sbc-banner {
+    box-sizing: border-box;
+    padding: .5rem 0 .3rem .5rem;
+  }
+  @media (min-width: 800px) {
+    .sbc-banner { padding-right: 21%; }
+  }
+  @media only screen and (orientation: portrait) {
+    .sbc-badge { top: 3.3rem; }
+  }
+
+  .sbc-letter {
+    --bead: min(2.3rem, 6.3vw);
+    width: var(--bead);
+    height: var(--bead);
+    display: grid;
+    place-items: center;
+    font-family: var(--jelly-round);
+    font-size: min(1.45rem, 4.4vw);
+    line-height: 1;
+    border-radius: 32%;
+    border: .1rem solid rgb(255 255 255 / .75);
+    background: var(--jelly-shine), var(--bead-color);
+    color: var(--bead-ink);
+    box-shadow: inset 0 -.2rem .3rem rgb(0 0 0 / .1), 0 .2rem .5rem var(--bead-color);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+  .sbc-letter:nth-of-type(odd) { transform: rotate(-4deg); }
+  .sbc-letter:nth-of-type(even) { transform: rotate(3deg) translateY(.1rem); }
+  .sbc-letter:nth-of-type(4n + 1) { --bead-color: rgb(255 70 160 / .5); --bead-ink: #8E0F55; }
+  .sbc-letter:nth-of-type(4n + 2) { --bead-color: rgb(140 80 255 / .45); --bead-ink: #43189E; }
+  .sbc-letter:nth-of-type(4n + 3) { --bead-color: rgb(30 205 220 / .5); --bead-ink: #06566A; }
+  .sbc-letter:nth-of-type(4n + 4) { --bead-color: rgb(255 205 40 / .6); --bead-ink: #7A4A00; }
+
+  .sbc-banner-dots {
+    color: #FF3D9A !important;
+  }
+
+  .sbc-badge {
+    border-radius: 2rem;
+    border-width: .15rem;
+    border-color: rgb(255 255 255 / .8);
+    background-image: var(--jelly-shine);
+    box-shadow: inset 0 -.4rem .6rem rgb(150 0 80 / .2), 0 .4rem 1rem rgb(255 45 150 / .35);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    text-decoration: none;
+  }
+  .sbc-badge-text {
+    font-family: var(--jelly-round);
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: .08em;
+    text-shadow: 0 .08rem 0 rgb(150 0 80 / .45);
+  }
+  /* "radio" */
+  .sbc-badge::after {
+    content: 'ラジオ';
+    position: absolute;
+    right: 1rem;
+    bottom: .1rem;
+    font-family: var(--jelly-dots);
+    font-size: .6rem;
+    color: rgb(255 255 255 / .9);
+  }
+  @media (min-width: 800px) {
+    .sbc-badge-text { font-size: 2.3rem; }
+    .sbc-badge::after { font-size: .75rem; right: 1.6rem; bottom: .15rem; }
+  }
+
+  /* ---------- tapes: clear shells with the tape showing ---------- */
+
+  .sbc-tape {
+    border: .15rem solid var(--tape-edge);
+    border-radius: 1rem;
+    background:
+      radial-gradient(circle at .55rem .55rem, var(--jelly-screw)),
+      radial-gradient(circle at calc(100% - .55rem) .55rem, var(--jelly-screw)),
+      radial-gradient(circle at .55rem calc(100% - .55rem), var(--jelly-screw)),
+      radial-gradient(circle at calc(100% - .55rem) calc(100% - .55rem), var(--jelly-screw)),
+      var(--jelly-shine),
+      var(--tape);
+    box-shadow: inset 0 .2rem .4rem rgb(255 255 255 / .6), inset 0 -.4rem .6rem rgb(190 0 100 / .15), 0 .5rem 1.1rem rgb(255 45 150 / .32);
+    -webkit-backdrop-filter: blur(3px) saturate(1.4);
+    backdrop-filter: blur(3px) saturate(1.4);
+    padding-top: .6rem;
+    padding-bottom: .5rem;
+  }
+
+  /* a paper sticker with a pink stripe */
+  .sbc-tape-label {
+    width: 78%;
+    border: 0;
+    border-radius: .25rem;
+    background: linear-gradient(#FF5FB0 0 .4rem, var(--tape-label) .4rem);
+    padding-top: .6rem;
+    box-shadow: 0 .05rem .15rem rgb(0 0 0 / .25);
+  }
+
+  /* the window onto the reels */
+  .sbc-tape-holes {
+    width: 9rem;
+    margin: .5rem 0;
+    padding: .9rem 1.2rem;
+    border-radius: 1.2rem;
+    background: rgb(255 255 255 / .3);
+    box-shadow: inset 0 .15rem .4rem rgb(120 0 70 / .35);
+  }
+
+  /* the first reel is full of tape and the second is nearly empty */
+  .sbc-tape-hole {
+    border-width: .25rem;
+    box-shadow: 0 0 0 .75rem rgb(74 40 34 / .82), 0 0 0 .82rem rgb(40 20 16 / .5);
+  }
+  .sbc-tape-hole:last-child {
+    box-shadow: 0 0 0 .25rem rgb(74 40 34 / .82), 0 0 0 .32rem rgb(40 20 16 / .5);
+  }
+
+  .sbc-tape-genre {
+    width: 9rem;
+    border: 0;
+    border-radius: 999px;
+    align-items: center;
+    background: rgb(255 255 255 / .7);
+    color: var(--tape-ink);
+  }
+
+  /* in the deck only the top edge of the tape sticks out */
+  .sbc-tape-loaded {
+    border-bottom: 0;
+    border-radius: 1rem 1rem 0 0;
+    padding-top: .45rem;
+    background: var(--jelly-shine), var(--tape);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 .2rem .4rem rgb(255 255 255 / .6);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sbc-tape:hover .sbc-tape-hole {
+      animation: jelly-spin 2.4s linear infinite;
+    }
+  }
+
+  /* ---------- the radio ---------- */
+
+  .sbc-radio {
+    box-sizing: border-box;
+    width: 22rem;
+    padding: .8rem .8rem 2.9rem;
+    border: .2rem solid var(--radio-edge);
+    border-radius: 2.2rem;
+    background:
+      radial-gradient(circle at 1.05rem calc(100% - 1.05rem), var(--jelly-screw)),
+      radial-gradient(circle at calc(100% - 1.05rem) calc(100% - 1.05rem), var(--jelly-screw)),
+      radial-gradient(circle at 1.05rem 1.05rem, var(--jelly-screw)),
+      var(--jelly-shine),
+      var(--radio);
+    box-shadow: inset 0 .5rem .8rem rgb(255 255 255 / .5), inset 0 -.7rem 1rem rgb(70 20 160 / .2), 0 .7rem 1.6rem rgb(120 60 230 / .32);
+    -webkit-backdrop-filter: blur(3px) saturate(1.4);
+    backdrop-filter: blur(3px) saturate(1.4);
+  }
+
+  /* two batteries, end to end, in the bottom of the shell */
+  .sbc-radio::before {
+    content: '';
+    position: absolute;
+    left: 2.1rem;
+    bottom: .65rem;
+    width: 7rem;
+    height: 1.45rem;
+    border-radius: .3rem;
+    opacity: .9;
+    background:
+      linear-gradient(rgb(255 255 255 / .6), rgb(255 255 255 / 0) 38%, rgb(0 0 0 / .28)),
+      linear-gradient(90deg, #C9CBD6 0 .2rem, #2B2B3A .2rem 1.1rem, #FF5FB0 1.1rem 3.05rem, #E3C15A 3.05rem 3.33rem, #C9CBD6 3.33rem 3.5rem) 0 0 / 3.5rem 100%;
+  }
+
+  /* the model name, pressed into the plastic ("stereo") */
+  .sbc-radio::after {
+    content: 'SBC-80 ステレオ';
+    position: absolute;
+    right: 2.1rem;
+    bottom: .95rem;
+    font-family: var(--jelly-dots);
+    font-size: .65rem;
+    letter-spacing: .12em;
+    color: rgb(60 20 140 / .75);
+    text-shadow: 0 .06rem 0 rgb(255 255 255 / .6);
+  }
+
+  .sbc-radio-buttons {
+    gap: .5rem;
+    margin-bottom: .7rem;
+  }
+
+  /* an ON AIR lamp in the corner: dull when stopped, amber and blinking while tuning in,
+     green when the music is playing */
+  .sbc-radio-buttons::before {
+    content: 'ON AIR';
+    position: absolute;
+    top: 1.25rem;
+    right: 2.2rem;
+    font-family: var(--jelly-dots);
+    font-size: .5rem;
+    color: rgb(60 20 140 / .75);
+    text-shadow: 0 .06rem 0 rgb(255 255 255 / .6);
+  }
+  .sbc-radio-buttons::after {
+    content: '';
+    position: absolute;
+    top: 1.2rem;
+    right: 1.3rem;
+    width: .6rem;
+    height: .6rem;
+    border-radius: 50%;
+    border: .08rem solid rgb(255 255 255 / .7);
+    background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .7), transparent 50%), rgb(110 20 60 / .55);
+  }
+  .sbc-radio[data-phase="playing"] .sbc-radio-buttons::after {
+    background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .8), transparent 50%), #4DF07A;
+    box-shadow: 0 0 .5rem .1rem rgb(77 240 122 / .9);
+  }
+  .sbc-radio[data-phase="connecting"] .sbc-radio-buttons::after,
+  .sbc-radio[data-phase="reconnecting"] .sbc-radio-buttons::after {
+    background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .8), transparent 50%), #FFB21E;
+    box-shadow: 0 0 .5rem .1rem rgb(255 178 30 / .9);
+    animation: jelly-blink .9s steps(2, jump-none) infinite;
+  }
+
+  /* gumdrop buttons */
+  .sbc-btn {
+    transform: none;
+    height: 2.5rem;
+    border: .12rem solid rgb(255 255 255 / .75);
+    border-radius: 999px;
+    background-image: radial-gradient(ellipse 70% 55% at 50% 8%, rgb(255 255 255 / .8), rgb(255 255 255 / 0));
+    box-shadow: inset 0 -.3rem .35rem rgb(0 0 0 / .13), 0 .2rem .45rem rgb(60 20 140 / .28);
+    cursor: pointer;
+  }
+  .sbc-play, .sbc-pause { width: 3.4rem; }
+  .sbc-eject { width: 5rem; }
+
+  .sbc-volume {
+    right: 1.75rem;
+    bottom: 3.9rem;
+  }
+
+  /* the tape deck: a thicker piece of the same plastic */
+  .sbc-deck {
+    border: .15rem solid rgb(255 255 255 / .55);
+    border-radius: 1.4rem;
+    margin-top: 0;
+    background: var(--jelly-shine), rgb(110 50 230 / .32);
+    box-shadow: inset 0 .3rem .7rem rgb(50 10 120 / .35);
+  }
+
+  /* the circuit board behind it: gold traces and solder pads on green */
+  .sbc-deck-inset {
+    border-radius: .5rem;
+    background:
+      radial-gradient(circle, #F1D878 0 .11rem, rgb(120 90 20 / .6) .13rem .17rem, transparent .19rem) .3rem .3rem / 1.2rem 1.2rem,
+      linear-gradient(90deg, transparent 46%, rgb(232 201 90 / .55) 46% 54%, transparent 54%) .3rem 0 / 2.4rem 100%,
+      linear-gradient(transparent 46%, rgb(232 201 90 / .35) 46% 54%, transparent 54%) 0 .9rem / 100% 3.6rem,
+      var(--radio-inset);
+    box-shadow: inset 0 0 .5rem rgb(0 40 20 / .6);
+  }
+
+  /* a liquid crystal display */
+  .sbc-screen {
+    margin-top: .35rem;
+    margin-bottom: .65rem;
+    height: 3.6rem;
+    border: .15rem solid #2C2440;
+    border-radius: .4rem;
+    font-family: var(--jelly-dots);
+    font-size: .72rem;
+    line-height: 1.25;
+    text-align: center;
+    background-image: repeating-linear-gradient(rgb(0 0 0 / .05) 0 1px, transparent 1px 3px);
+    box-shadow: inset 0 .15rem .4rem rgb(0 0 0 / .35);
+  }
+
+  .sbc-slot {
+    border: 0;
+    border-radius: .6rem .6rem 0 0;
+    box-shadow: inset 0 .3rem .6rem rgb(0 0 0 / .6);
+    overflow: hidden;
+  }
+
+  /* ---------- the TV ---------- */
+
+  .sbc-tv-cabinet {
+    border: .2rem solid var(--tv-edge);
+    border-radius: 2rem;
+    background:
+      radial-gradient(circle at .5rem 50%, var(--jelly-screw)),
+      radial-gradient(circle at calc(100% - .5rem) 50%, var(--jelly-screw)),
+      var(--jelly-shine),
+      var(--tv);
+    box-shadow: inset 0 .5rem .8rem rgb(255 255 255 / .5), inset 0 -.7rem 1rem rgb(0 100 120 / .2), 0 .7rem 1.6rem rgb(0 170 190 / .32);
+    -webkit-backdrop-filter: blur(3px) saturate(1.4);
+    backdrop-filter: blur(3px) saturate(1.4);
+  }
+
+  .sbc-tv-tube {
+    border: .12rem solid rgb(255 255 255 / .5);
+    border-radius: 1.4rem;
+    box-shadow: inset 0 .3rem .7rem rgb(0 60 80 / .4);
+  }
+
+  /* chrome rods with a jelly ball on the end */
+  .sbc-tv-antenna::after {
+    content: '';
+    position: absolute;
+    top: -.35rem;
+    left: 50%;
+    width: .7rem;
+    height: .7rem;
+    margin-left: -.35rem;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .85), transparent 50%), rgb(255 61 154 / .85);
+  }
+
+  .sbc-tv-label {
+    font-family: var(--jelly-dots);
+    font-size: .55rem;
+    margin: .15rem 0 .5rem;
+  }
+
+  .sbc-tv-knob,
+  .sbc-tv-switch,
+  .sbc-tv-power {
+    border: .12rem solid rgb(255 255 255 / .75);
+    background-image: radial-gradient(ellipse 70% 55% at 50% 10%, rgb(255 255 255 / .8), rgb(255 255 255 / 0));
+    box-shadow: inset 0 -.25rem .3rem rgb(0 0 0 / .13), 0 .2rem .45rem rgb(0 90 110 / .3);
+  }
+  .sbc-tv-switch {
+    border-radius: 999px;
+  }
+  .sbc-tv-switch[aria-pressed="true"] {
+    box-shadow: inset 0 -.25rem .3rem rgb(0 0 0 / .13), 0 0 .5rem rgb(120 230 90 / .9);
+  }
+  .sbc-tv-power[aria-pressed="true"] {
+    box-shadow: inset 0 -.25rem .3rem rgb(0 0 0 / .13), 0 0 .6rem .1rem rgb(255 61 154 / .85);
+  }
+
+  /* speaker holes, not slats */
+  .sbc-tv-grille {
+    background: radial-gradient(circle, var(--tv-dark) 0 .13rem, transparent .16rem) 50% 0 / .53rem .53rem;
+  }
+
+  .sbc-tv-foot {
+    height: .9rem;
+    border: .12rem solid rgb(255 255 255 / .6);
+    border-top: 0;
+    border-radius: 0 0 1rem 1rem;
+  }
+
+  /* ---------- the footer ---------- */
+
+  .sbc-footer {
+    height: 1.4rem;
+    font-family: var(--jelly-round);
+    font-weight: 500;
+    font-size: .8rem;
+    border-top: .08rem solid rgb(255 255 255 / .8);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+}

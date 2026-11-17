@@ -50,8 +50,8 @@ const Cassette = ({activeTrack, track, constraintsRef, reduced, setActiveTrack})
 
   if (reduced) {
     return (
-      <CassetteClosed>
-        <Title>{track.genre || 'Just Chill'}</ Title>
+      <CassetteClosed className="sbc-tape sbc-tape-loaded">
+        <Title className="sbc-tape-label">{track.genre || 'Just Chill'}</ Title>
       </CassetteClosed>
     )
   } else if (activeTrack === null || activeTrack.id !== track.id) {
@@ -68,13 +68,13 @@ const Cassette = ({activeTrack, track, constraintsRef, reduced, setActiveTrack})
         tabIndex={0}
         aria-label={`Load the ${name} tape`}
       >
-        <CassetteOpen>
-        <Title>{name}</ Title>
-          <Holes>
-              <Hole ></Hole >
-              <Hole ></Hole >
+        <CassetteOpen className="sbc-tape">
+        <Title className="sbc-tape-label">{name}</ Title>
+          <Holes className="sbc-tape-holes">
+              <Hole className="sbc-tape-hole"></Hole >
+              <Hole className="sbc-tape-hole"></Hole >
           </Holes>
-          <CassetteBottom>{track.genre}</CassetteBottom>
+          <CassetteBottom className="sbc-tape-genre">{track.genre}</CassetteBottom>
         </CassetteOpen>
       </motion.div>
     );

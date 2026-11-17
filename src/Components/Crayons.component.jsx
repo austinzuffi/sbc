@@ -6,13 +6,15 @@ import styled from 'styled-components';
 const CRAYONS = {
   classic: { color: '#E9573F', tilt: -7 },
   walnut: { color: '#C39A60', tilt: 3 },
-  shore: { color: '#647D7D', tilt: 9 }
+  shore: { color: '#647D7D', tilt: 9 },
+  jelly: { color: '#FF5FB0', tilt: -4 }
 };
 
 const Crayons = ({ themes, theme, setTheme }) => (
-  <Box>
+  <Box className="sbc-crayons">
     {themes.map((name) => (
       <Crayon
+        className="sbc-crayon"
         key={name}
         type="button"
         title={`${name} colors`}

@@ -1,6 +1,9 @@
-/* Color themes. The crayons under RADIO (or the footer button on phones) switch
+/* Themes. The crayons under RADIO (or the footer button on phones) switch
    <html data-theme="...">. To add one: copy a block, rename it, add the name to THEMES
-   in App.jsx and give it a crayon in Crayons.component.jsx. */
+   in App.jsx and give it a crayon in Crayons.component.jsx.
+   A theme can go past colors: every part of the page has an sbc- class name (sbc-radio,
+   sbc-tape, sbc-tv-knob ...), so a theme can have its own stylesheet in src/themes that
+   reshapes any of them. themes/jelly.css is one; import a new one in main.jsx. */
 :root {
   --page: black;
   --page-image: none;
@@ -155,6 +158,65 @@
   --osd: #F3E3E4;
   --switch-on: #232C2C;
   --power-on: #232C2C;
+}
+
+/* jelly: see-through plastic, like jelly sandals and clear-shell electronics. Grape radio,
+   aqua TV, pink tapes, candy buttons. Most colors are partly transparent, so whatever is
+   behind a thing shows through it. These are only the colors: the shapes, the shine and the
+   insides you can see through the shells are in themes/jelly.css. */
+:root[data-theme="jelly"] {
+  --page: #F1E9FB;
+  --page-image:
+    radial-gradient(circle at 20% 30%, rgb(255 61 154 / .5) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 70% 60%, rgb(40 190 225 / .55) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 40% 80%, rgb(255 190 30 / .65) 0 1px, transparent 1.5px),
+    linear-gradient(160deg, #F3E9FF, #E1F8F5 55%, #FFE8F2);
+  --footer-bg: rgb(255 255 255 / .6);
+  --footer-fg: #6F5C96;
+  --footer-hover: #E0177F;
+  --banner: transparent;
+  --banner-ink: #5B2BBF;
+  --badge: rgb(255 45 150 / .7);
+  --badge-ink: #FFFFFF;
+
+  --tape: rgb(255 70 160 / .46);
+  --tape-edge: rgb(255 255 255 / .8);
+  --tape-label: #FFFDF6;
+  --tape-ink: #4A1D6B;
+  --tape-hole: rgb(255 255 255 / .55);
+  --tape-reel: #FFFFFF;
+
+  --radio: rgb(140 80 255 / .5);
+  --radio-edge: rgb(255 255 255 / .65);
+  --radio-inset: rgb(24 130 84 / .85);
+  --screen: #A9B49A;
+  --screen-ink: #1F2A1A;
+  --slot: rgb(35 12 70 / .78);
+  --slot-ink: rgb(255 255 255 / .85);
+  --slider: #FF3D9A;
+
+  --btn: rgb(255 255 255 / .6);
+  --btn-ink: #3B2A66;
+  --btn-edge: rgb(255 255 255 / .85);
+  --play: rgb(120 230 90 / .8);
+  --play-ink: #0F5A1C;
+  --pause: rgb(255 200 40 / .85);
+  --pause-ink: #7A4A00;
+  --eject: rgb(60 200 230 / .8);
+  --eject-ink: #06495C;
+
+  --tv: rgb(30 205 220 / .46);
+  --tv-edge: rgb(255 255 255 / .65);
+  --tv-inset: rgb(0 90 110 / .3);
+  --tv-dark: rgb(0 80 100 / .6);
+  --tv-foot: rgb(30 205 220 / .6);
+  --tv-label: #06495C;
+  --antenna: linear-gradient(90deg, #9AA3AD, #FFFFFF, #9AA3AD);
+  --knob: rgb(255 222 50 / .8);
+  --knob-edge: rgb(255 255 255 / .75);
+  --osd: #7CFFB2;
+  --switch-on: rgb(120 230 90 / .85);
+  --power-on: rgb(255 61 154 / .9);
 }
 
 body {

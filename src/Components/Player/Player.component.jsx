@@ -45,13 +45,13 @@ const Player = ({ tracks, channels, setDancing }) => {
   const Cassettes = (tracks && tracks.length) ? tracks.map((track) => {
     if (activeTrack === null || activeTrack.id !== track.id) {
       return (
-        <Row key={track.id} >
+        <Row className="sbc-tape-row" key={track.id} >
           <Cassette track={track} constraintsRef={constraintsRef} activeTrack={activeTrack} setActiveTrack={setLoaded} />
         </Row>
       )
     } else {
       return (
-        <Row key={track.id}></Row>
+        <Row className="sbc-tape-row" key={track.id}></Row>
       )
     }
   }) : [];
@@ -61,17 +61,17 @@ const Player = ({ tracks, channels, setDancing }) => {
   const nothingOnAir = Array.isArray(tracks) && tracks.length === 0;
 
   return (
-    <Container>
+    <Container className="sbc-player">
       <motion.div className="drag-area" ref={constraintsRef}>
-        <Bottom $activeTrack={activeTrack}>
+        <Bottom className="sbc-machines" $activeTrack={activeTrack}>
           {wideScreen && <TV channels={channels} />}
           <Radio activeTrack={activeTrack} nothingOnAir={nothingOnAir} offAir={offAir} setActiveTrack={setLoaded} onPlayingChange={setSpinTheBall} />
         </Bottom>
-        <Top>
+        <Top className="sbc-tapes">
           {Cassettes}
         </Top>
       </motion.div>
-      <Background $activeTrack={activeTrack} $spinTheBall={spinTheBall}/>
+      <Background className="sbc-dim" $activeTrack={activeTrack} $spinTheBall={spinTheBall}/>
       {DiscoBall}
     </Container>
   )

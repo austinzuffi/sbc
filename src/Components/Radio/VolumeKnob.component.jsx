@@ -109,11 +109,12 @@ const VolumeKnob = ({ value, onChange }) => {
 const Dial = styled.div`
   --wheel-radius: 1.6rem;
   --wheel-depth: 1rem;
+  --wheel-inset: .45rem; /* how much of the wheel sits inside the case */
   --tilt: 25deg;
   position: absolute;
   z-index: 1; /* above the page's dimming layer, like the buttons */
   top: 50%;
-  left: calc(100% + var(--radio-border, .3rem) - .05rem);
+  left: calc(100% + var(--radio-border, .3rem) - var(--wheel-inset));
   width: var(--wheel-depth);
   height: calc(2 * var(--wheel-radius));
   margin-top: calc(-1 * var(--wheel-radius));
@@ -177,9 +178,9 @@ const Slot = styled.div`
   position: absolute;
   top: -.15rem;
   bottom: -.15rem;
-  right: calc(100% - .05rem);
-  width: calc(var(--radio-border, .3rem) + .1rem);
-  border-radius: .15rem 0 0 .15rem;
+  left: -.12rem;
+  width: calc(var(--wheel-inset) + .12rem);
+  border-radius: .2rem 0 0 .2rem;
   background: rgb(0 0 0 / .45);
   box-shadow: inset .08rem 0 .12rem rgb(0 0 0 / .5);
   pointer-events: none;

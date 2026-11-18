@@ -291,7 +291,7 @@ const RadioBody = styled.div`
   width: 21rem;
   align-self: flex-end;
   /* room for the volume knob sticking out of the right side */
-  margin-right: 1.3rem;
+  margin-right: .9rem;
 `;
 
 const THEMEBODYGOTH = styled(RadioBody)`

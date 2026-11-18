@@ -79,8 +79,6 @@ const VolumeKnob = ({ value, onChange }) => {
       onPointerCancel={onPointerUp}
       onKeyDown={onKeyDown}
     >
-      <Mark className="sbc-volume-number" style={{ top: 'calc(50% - var(--wheel-reach))' }} aria-hidden="true">11</Mark>
-      <Mark className="sbc-volume-number" style={{ top: 'calc(50% + var(--wheel-reach))' }} aria-hidden="true">0</Mark>
       <Slot className="sbc-volume-slot" />
       <Tilt>
         <Spin style={{ transform: `rotateX(${turn}deg)` }}>
@@ -111,7 +109,6 @@ const VolumeKnob = ({ value, onChange }) => {
 const Dial = styled.div`
   --wheel-radius: 1.6rem;
   --wheel-depth: 1rem;
-  --wheel-reach: 1.5rem; /* how far up and down the mark goes: sin(SWEEP / 2) of the radius */
   --tilt: 25deg;
   position: absolute;
   z-index: 1; /* above the page's dimming layer, like the buttons */
@@ -139,19 +136,6 @@ const Dial = styled.div`
     border-radius: .3rem;
     outline: .12rem solid var(--dial-ink);
   }
-`;
-
-// 0 and 11, printed on the side of the case next to the wheel
-const Mark = styled.span`
-  position: absolute;
-  /* clear of the wheel, which leans over the case when it's tilted */
-  right: calc(100% + var(--radio-border, .3rem) + .25rem + var(--wheel-radius) * sin(var(--tilt)));
-  margin-top: -.25rem;
-  font-family: 'Press Start 2P', cursive;
-  font-size: .4rem;
-  line-height: .5rem;
-  color: var(--dial-ink);
-  pointer-events: none;
 `;
 
 const Tilt = styled.div`

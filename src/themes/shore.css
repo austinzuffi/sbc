@@ -129,6 +129,7 @@
   /* ---------- the radio ---------- */
 
   .sbc-radio {
+    --radio-border: .07rem;
     border: .07rem solid rgb(229 237 248 / .85);
     border-radius: 2.8rem 1.8rem 2.2rem 1.6rem;
     box-shadow: var(--shore-glass);

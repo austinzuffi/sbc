@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useRef } from 'react';
 
 // components
 import Cassette from '../Cassette/Cassette.component';
+import VolumeKnob from './VolumeKnob.component';
 
 // libraries
 import styled from 'styled-components';
@@ -191,11 +192,7 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
           </EjectButton>
         </motion.div>
       </RadioButtons>
-      <Volume
-        className="sbc-volume"
-        type="range" min="0" max="1" step="0.05" value={volume} aria-label="Volume"
-        onChange={(e) => setVolume(parseFloat(e.target.value))}
-      />
+      <VolumeKnob value={volume} onChange={setVolume} />
       <THEMERADIOMAINGOTH id="radio-insert" className="sbc-deck">
         <THEMERADIOINSERTGOTH id="insert-here" className="sbc-deck-inset">
           <THEMESCREENGOTH className="sbc-screen" role="status">{screen}</THEMESCREENGOTH>
@@ -282,20 +279,6 @@ const RadioButtons = styled.div`
   display: flex;
 `;
 
-const Volume = styled.input`
-  /* stands upright in the strip to the right of the tape deck; up is louder */
-  position: absolute;
-  right: .1rem;
-  bottom: 3.8rem;
-  height: 7rem;
-  width: 1rem;
-  margin: 0;
-  writing-mode: vertical-lr;
-  direction: rtl;
-  accent-color: var(--slider);
-  cursor: pointer;
-`;
-
 const RadioBody = styled.div`
   order: 2;
   position: relative;
@@ -307,6 +290,8 @@ const RadioBody = styled.div`
   border: outset .3rem #2b2b2b;
   width: 21rem;
   align-self: flex-end;
+  /* room for the volume knob sticking out of the right side */
+  margin-right: 1.3rem;
 `;
 
 const THEMEBODYGOTH = styled(RadioBody)`

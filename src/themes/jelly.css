@@ -265,10 +265,9 @@
   .sbc-play, .sbc-pause { width: 3.4rem; }
   .sbc-eject { width: 5rem; }
 
-  .sbc-volume {
-    right: 1.75rem;
-    bottom: 3.9rem;
-  }
+  /* the shell is thin plastic, and the knob sits level with the tape deck, above the batteries */
+  .sbc-radio { --radio-border: .07rem; }
+  .sbc-volume { top: calc(50% - 1.1rem); }
 
   /* the tape deck: a thicker piece of the same plastic */
   .sbc-deck {

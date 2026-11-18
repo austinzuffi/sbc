@@ -25,7 +25,7 @@ It has been on the air since February 2020. It was built by Warlock and Bird, ha
 
 **Now playing.** The radio shows the song title the station sends. The title and play/pause also appear on your phone's lock screen and work from headphone buttons.
 
-**Volume.** There's a slider on the radio, and it's remembered for next time.
+**Volume.** The wheel on the right side of the radio goes from 0 to 11. Push its edge up or down, scroll over it, or use the arrow keys once it's selected. It's remembered for next time. (iPhones and iPads use their own volume buttons instead.)
 
 **The disco ball.** It comes down when a tape is loaded and spins while the music plays.
 

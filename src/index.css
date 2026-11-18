@@ -29,7 +29,7 @@
   --screen-ink: black;
   --slot: black;
   --slot-ink: white;
-  --slider: #1CB676;
+  --dial-ink: #4A3A12;
 
   --btn: white;
   --btn-ink: black;
@@ -83,7 +83,7 @@
   --screen-ink: #302625;
   --slot: #302625;
   --slot-ink: #D9C797;
-  --slider: #302625;
+  --dial-ink: #E5DFD2;
 
   --btn: #E5DFD2;
   --btn-ink: #302625;
@@ -139,7 +139,7 @@
   --screen-ink: #232C2C;
   --slot: #647D7D;
   --slot-ink: #E5EDF8;
-  --slider: #647D7D;
+  --dial-ink: #232C2C;
 
   --btn: #E5EDF8;
   --btn-ink: #232C2C;
@@ -195,7 +195,7 @@
   --screen-ink: #1F2A1A;
   --slot: rgb(20 22 24 / .84);
   --slot-ink: rgb(255 255 255 / .7);
-  --slider: #2A2E31;
+  --dial-ink: #3A4045;
 
   --btn: #1D1F21;
   --btn-ink: #E8EAEA;

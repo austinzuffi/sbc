@@ -77,13 +77,22 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
     connect();
   }, [connect]);
 
+  // Pause keeps the stream attached, so the phone keeps the notification with its play button.
+  // Play after it still opens a new connection (see connect), so it picks up live radio.
+  const pause = useCallback(() => {
+    wantPlay.current = false;
+    clearTimers();
+    if (audioRef.current) audioRef.current.pause();
+    setPhase('idle');
+  }, []);
+
+  // Eject or a tape swap: drop the connection too, which also clears the phone notification.
   const stop = useCallback(() => {
     wantPlay.current = false;
     clearTimers();
     const audio = audioRef.current;
     if (audio) {
       audio.pause();
-      // drop the connection instead of buffering a stream nobody is hearing
       audio.removeAttribute('src');
       audio.load();
     }
@@ -105,7 +114,7 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
     };
     // paused from outside the page, like headphones being unplugged
     const onPause = () => {
-      if (wantPlay.current && !audio.ended && !audio.error && audio.getAttribute('src')) stop();
+      if (wantPlay.current && !audio.ended && !audio.error && audio.getAttribute('src')) pause();
     };
     const onOnline = () => {
       if (wantPlay.current && audio.paused) {
@@ -127,7 +136,7 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
       audio.removeEventListener('pause', onPause);
       window.removeEventListener('online', onOnline);
     };
-  }, [connect, reconnect, stop]);
+  }, [connect, reconnect, pause]);
 
   // the tape was ejected or swapped
   useEffect(() => stop, [url, stop]);
@@ -150,8 +159,9 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
   useEffect(() => {
     if (!('mediaSession' in navigator)) return;
     navigator.mediaSession.setActionHandler('play', play);
-    navigator.mediaSession.setActionHandler('pause', stop);
-  }, [play, stop]);
+    navigator.mediaSession.setActionHandler('pause', pause);
+    navigator.mediaSession.setActionHandler('stop', stop);
+  }, [play, pause, stop]);
 
   useEffect(() => {
     if (!('mediaSession' in navigator) || !window.MediaMetadata) return;
@@ -184,7 +194,7 @@ const Radio = ({activeTrack, nothingOnAir, offAir, setActiveTrack, onPlayingChan
           <PlayButton className="sbc-btn sbc-play" type="button" aria-label="Play" onClick={play}><GiPlayButton size='2em'/></PlayButton>
         </motion.div>
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-          <PauseButton className="sbc-btn sbc-pause" type="button" aria-label="Pause" onClick={stop}><GiPauseButton size='2em' /></PauseButton>
+          <PauseButton className="sbc-btn sbc-pause" type="button" aria-label="Pause" onClick={pause}><GiPauseButton size='2em' /></PauseButton>
         </motion.div>
         <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <EjectButton className="sbc-btn sbc-eject" type="button" aria-label="Eject the tape" onClick={() => { stop(); setActiveTrack(null); }}>
